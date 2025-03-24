@@ -48,7 +48,7 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
   const featuredImage = product.images?.[0] || "https://placehold.co/600x400?text=No+Image";
 
   return (
-    <div className="card-product rounded-md overflow-hidden group">
+    <div className="card-product rounded-md overflow-hidden group bg-black/20 border border-zinc-800/50 hover:border-gold/40 transition-all">
       <div className="relative overflow-hidden">
         <img 
           src={featuredImage}
@@ -57,19 +57,19 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
         />
         
         {showSaleBadge && product.sale && (
-          <div className="absolute top-0 right-0 bg-primary text-black px-3 py-1 m-2 font-bold text-sm rounded-sm">
+          <div className="absolute top-2 right-2 bg-gold text-black px-3 py-1 font-semibold text-xs uppercase tracking-wider rounded">
             {product.sale.discountPercentage}% OFF
           </div>
         )}
       </div>
       
       <div className="p-5">
-        <h3 className="text-lg font-bold mb-1.5 text-zinc-100">{product.name}</h3>
+        <h3 className="text-lg font-semibold mb-2 text-zinc-100 group-hover:text-gold transition-colors">{product.name}</h3>
         
-        <div className="flex items-center mb-2">
+        <div className="flex items-baseline mb-2">
           {product.sale ? (
             <>
-              <span className="text-lg font-bold text-primary mr-2">
+              <span className="text-xl font-bold text-gold mr-2">
                 {formatCurrency(product.sale.salePrice)}
               </span>
               <span className="text-zinc-500 line-through text-sm">
@@ -77,24 +77,24 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
               </span>
             </>
           ) : (
-            <span className="text-lg font-bold text-primary">
+            <span className="text-xl font-bold text-gold">
               {formatCurrency(product.price)}
             </span>
           )}
         </div>
         
-        <div className="text-zinc-400 text-sm mb-4">
+        <div className="text-zinc-400 text-sm mb-5 leading-relaxed">
           {product.description || `${product.weight} package • SKU: ${product.sku}`}
         </div>
         
         <Button 
           onClick={handleAddToCart}
-          className="w-full button-gold transition"
+          className={`w-full ${isAdding ? 'bg-emerald-900 hover:bg-emerald-900 text-emerald-100' : 'button-gold'} h-11 transition-all duration-200`}
           disabled={isAdding}
         >
           {isAdding ? (
             <>
-              <Check className="mr-2 h-4 w-4" /> Added
+              <Check className="mr-2 h-4 w-4" /> Added to Cart
             </>
           ) : (
             <>

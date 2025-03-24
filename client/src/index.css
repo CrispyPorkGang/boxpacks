@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --gold: #d4af37;
+  --gold-hover: #c5a12f;
+  --gold-light: #e6c144;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -14,26 +20,90 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-sans font-bold tracking-tight;
   }
+  
+  .text-gold {
+    color: var(--gold);
+  }
+  
+  .bg-gold {
+    background-color: var(--gold);
+  }
+  
+  .border-gold {
+    border-color: var(--gold);
+  }
 }
 
 @layer components {
   .gold-gradient {
-    @apply bg-gradient-to-r from-yellow-500 to-amber-500 text-transparent bg-clip-text;
+    @apply bg-gradient-to-r from-amber-500 to-yellow-400 text-transparent bg-clip-text;
   }
   
   .button-gold {
-    @apply bg-primary hover:bg-primary/90 text-black font-medium;
+    background-color: var(--gold);
+    color: #000;
+    border: 1px solid var(--gold);
+    font-weight: 500;
+  }
+  
+  .button-gold:hover {
+    background-color: var(--gold-hover);
+    border-color: var(--gold-hover);
+    color: #000;
+  }
+  
+  .button-gold:focus {
+    outline: 2px solid var(--gold-light);
+    outline-offset: 2px;
   }
   
   .card-product {
-    @apply bg-zinc-900 border border-zinc-800 hover:border-primary/50 transition-all duration-300;
+    @apply bg-zinc-900/50 border border-zinc-800/80 transition-all duration-300;
   }
   
   .nav-link {
-    @apply transition-colors hover:text-primary;
+    @apply transition-colors hover:text-gold;
   }
   
   .hero-section {
-    @apply bg-zinc-900 border-b border-zinc-800;
+    @apply bg-gradient-to-b from-zinc-900 to-black border-b border-zinc-800/50;
+  }
+  
+  /* Custom slider styles */
+  .embla__slide {
+    @apply flex-[0_0_100%] min-w-0;
+  }
+  
+  @media (min-width: 768px) {
+    .embla__slide {
+      @apply flex-[0_0_50%];
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .embla__slide {
+      @apply flex-[0_0_33.333333%];
+    }
+  }
+  
+  /* Animated underline for nav links */
+  .nav-underline {
+    position: relative;
+  }
+  
+  .nav-underline::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--gold);
+    transition: width 0.3s ease;
+  }
+  
+  .nav-underline:hover::after,
+  .nav-underline.active::after {
+    width: 100%;
   }
 }

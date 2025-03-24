@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tag } from "lucide-react";
 
 interface CategoryFilterProps {
   selectedCategoryId: number | null;
@@ -19,25 +20,28 @@ export default function CategoryFilter({
   const skeletonButtons = Array(5).fill(0).map((_, index) => (
     <Skeleton 
       key={index} 
-      className={`h-10 w-${index === 0 ? '32' : '24'} rounded-md bg-zinc-800`} 
+      className={`h-12 w-${index === 0 ? '40' : '28'} rounded-md bg-zinc-800`} 
     />
   ));
 
   if (error) {
     return (
-      <div className="mb-10 border-b border-zinc-800 pb-6">
-        <h2 className="text-xl font-bold mb-4 text-zinc-100">Categories</h2>
+      <div className="mb-10 pb-8 border-b border-zinc-800/60">
+        <div className="flex items-center gap-2 mb-6">
+          <Tag className="h-5 w-5 text-gold" />
+          <h2 className="text-2xl font-medium text-zinc-100">Categories</h2>
+        </div>
         <div className="flex flex-wrap gap-3">
           <Button
             variant={selectedCategoryId === null ? "default" : "outline"}
             className={selectedCategoryId === null 
-              ? "button-gold" 
-              : "border-zinc-700 hover:border-primary text-zinc-200 hover:text-primary"}
+              ? "button-gold h-11 px-5 rounded-md" 
+              : "border-zinc-700 hover:border-primary text-zinc-400 hover:text-primary h-11 px-5 rounded-md bg-black/20"}
             onClick={() => onSelectCategory(null)}
           >
             All Products
           </Button>
-          <div className="text-red-500 ml-2 flex items-center">
+          <div className="text-red-400 ml-2 flex items-center text-sm">
             Error loading categories: {error.message}
           </div>
         </div>
@@ -46,8 +50,11 @@ export default function CategoryFilter({
   }
 
   return (
-    <div className="mb-10 border-b border-zinc-800 pb-6">
-      <h2 className="text-xl font-bold mb-4 text-zinc-100">Categories</h2>
+    <div className="mb-10 pb-8 border-b border-zinc-800/60">
+      <div className="flex items-center gap-2 mb-6">
+        <Tag className="h-5 w-5 text-gold" />
+        <h2 className="text-2xl font-medium text-zinc-100">Categories</h2>
+      </div>
       <div className="flex flex-wrap gap-3">
         {isLoading ? (
           skeletonButtons
@@ -56,8 +63,8 @@ export default function CategoryFilter({
             <Button
               variant={selectedCategoryId === null ? "default" : "outline"}
               className={selectedCategoryId === null 
-                ? "button-gold" 
-                : "border-zinc-700 hover:border-primary text-zinc-200 hover:text-primary"}
+                ? "button-gold h-11 px-5 rounded-md" 
+                : "border-zinc-700 hover:border-primary text-zinc-400 hover:text-primary h-11 px-5 rounded-md bg-black/20"}
               onClick={() => onSelectCategory(null)}
             >
               All Products
@@ -68,8 +75,8 @@ export default function CategoryFilter({
                 key={category.id}
                 variant={selectedCategoryId === category.id ? "default" : "outline"}
                 className={selectedCategoryId === category.id 
-                  ? "button-gold" 
-                  : "border-zinc-700 hover:border-primary text-zinc-200 hover:text-primary"}
+                  ? "button-gold h-11 px-5 rounded-md" 
+                  : "border-zinc-700 hover:border-primary text-zinc-400 hover:text-primary h-11 px-5 rounded-md bg-black/20"}
                 onClick={() => onSelectCategory(category.id)}
               >
                 {category.name}

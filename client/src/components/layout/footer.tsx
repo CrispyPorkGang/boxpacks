@@ -47,23 +47,23 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Quick <span className="text-gold">Links</span></h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/">
-                  <a className="text-zinc-400 hover:text-gold transition-colors">Home</a>
+                <Link href="/" className="text-zinc-400 hover:text-gold transition-colors">
+                  Home
                 </Link>
               </li>
               <li>
-                <Link href="/shop">
-                  <a className="text-zinc-400 hover:text-gold transition-colors">Shop</a>
+                <Link href="/shop" className="text-zinc-400 hover:text-gold transition-colors">
+                  Shop
                 </Link>
               </li>
               <li>
-                <Link href="/account">
-                  <a className="text-zinc-400 hover:text-gold transition-colors">My Account</a>
+                <Link href="/account" className="text-zinc-400 hover:text-gold transition-colors">
+                  My Account
                 </Link>
               </li>
               <li>
-                <Link href="/shop">
-                  <a className="text-zinc-400 hover:text-gold transition-colors">Categories</a>
+                <Link href="/shop" className="text-zinc-400 hover:text-gold transition-colors">
+                  Categories
                 </Link>
               </li>
             </ul>

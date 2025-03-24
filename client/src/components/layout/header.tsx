@@ -56,7 +56,7 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <NavLink href="/" label="Home" currentPath={location} />
             <NavLink href="/shop" label="Shop" currentPath={location} />
-            <NavLink href="/#contact" label="Contact" currentPath={location} />
+            <NavLink href="/contact" label="Contact" currentPath={location} />
             {user?.isAdmin && (
               <NavLink href="/admin" label="Admin" currentPath={location} />
             )}
@@ -108,7 +108,7 @@ export default function Header() {
                   <nav className="flex flex-col space-y-6">
                     <MobileNavLink href="/" label="Home" onClick={closeMenu} />
                     <MobileNavLink href="/shop" label="Shop" onClick={closeMenu} />
-                    <MobileNavLink href="/#contact" label="Contact" onClick={closeMenu} />
+                    <MobileNavLink href="/contact" label="Contact" onClick={closeMenu} />
                     <MobileNavLink href="/account" label="Account" onClick={closeMenu} />
                     {user?.isAdmin && (
                       <MobileNavLink href="/admin" label="Admin" onClick={closeMenu} />

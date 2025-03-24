@@ -7,6 +7,7 @@ import HomePage from "@/pages/home-page";
 import ShopPage from "@/pages/shop-page";
 import AuthPage from "@/pages/auth-page";
 import AccountPage from "@/pages/account-page";
+import ContactPage from "@/pages/contact-page";
 import AdminDashboard from "@/pages/admin/dashboard";
 import AdminProducts from "@/pages/admin/products";
 import AdminCategories from "@/pages/admin/categories";
@@ -28,6 +29,7 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/shop" component={ShopPage} />
+      <Route path="/contact" component={ContactPage} />
       <Route path="/auth" component={AuthPage} />
       <ProtectedRoute path="/account" component={AccountPage} />
       <AdminRoute path="/admin" component={AdminDashboard} />

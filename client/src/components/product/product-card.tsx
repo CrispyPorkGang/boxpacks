@@ -48,53 +48,53 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
   const featuredImage = product.images?.[0] || "https://placehold.co/600x400?text=No+Image";
 
   return (
-    <div className="bg-secondary rounded-lg overflow-hidden shadow-lg group">
+    <div className="card-product rounded-md overflow-hidden group">
       <div className="relative overflow-hidden">
         <img 
           src={featuredImage}
           alt={product.name} 
-          className="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500" 
+          className="w-full h-64 object-cover transform group-hover:scale-105 transition duration-300" 
         />
         
         {showSaleBadge && product.sale && (
-          <div className="absolute top-0 right-0 bg-red-600 text-white px-3 py-1 m-2 rounded font-medium">
-            SALE {product.sale.discountPercentage}% OFF
+          <div className="absolute top-0 right-0 bg-primary text-black px-3 py-1 m-2 font-bold text-sm rounded-sm">
+            {product.sale.discountPercentage}% OFF
           </div>
         )}
       </div>
       
-      <div className="p-4">
-        <h3 className="text-xl font-bold mb-2">{product.name}</h3>
+      <div className="p-5">
+        <h3 className="text-lg font-bold mb-1.5 text-zinc-100">{product.name}</h3>
         
-        <div className="flex items-center mb-3">
+        <div className="flex items-center mb-2">
           {product.sale ? (
             <>
-              <span className="text-lg font-bold text-accent mr-2">
+              <span className="text-lg font-bold text-primary mr-2">
                 {formatCurrency(product.sale.salePrice)}
               </span>
-              <span className="text-gray-400 line-through">
+              <span className="text-zinc-500 line-through text-sm">
                 {formatCurrency(product.price)}
               </span>
             </>
           ) : (
-            <span className="text-lg font-bold text-accent">
+            <span className="text-lg font-bold text-primary">
               {formatCurrency(product.price)}
             </span>
           )}
         </div>
         
-        <p className="text-gray-300 text-sm mb-4">
-          {product.description || `${product.weight} package. SKU: ${product.sku}`}
-        </p>
+        <div className="text-zinc-400 text-sm mb-4">
+          {product.description || `${product.weight} package • SKU: ${product.sku}`}
+        </div>
         
         <Button 
           onClick={handleAddToCart}
-          className="w-full bg-accent hover:bg-accent/90 text-primary font-medium transition transform hover:scale-105"
+          className="w-full button-gold transition"
           disabled={isAdding}
         >
           {isAdding ? (
             <>
-              <Check className="mr-2 h-4 w-4" /> Added!
+              <Check className="mr-2 h-4 w-4" /> Added
             </>
           ) : (
             <>

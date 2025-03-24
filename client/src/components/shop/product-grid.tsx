@@ -24,16 +24,16 @@ export default function ProductGrid({ categoryId }: ProductGridProps) {
 
   // Create array of skeleton cards for loading state
   const skeletonCards = Array(8).fill(0).map((_, index) => (
-    <div key={index} className="bg-primary rounded-lg overflow-hidden shadow-lg">
+    <div key={index} className="card-product rounded-md overflow-hidden">
       <div className="relative">
-        <Skeleton className="w-full h-64" />
+        <Skeleton className="w-full h-64 bg-zinc-800" />
       </div>
-      <div className="p-4">
-        <Skeleton className="h-7 w-3/4 mb-2" />
-        <Skeleton className="h-6 w-1/4 mb-3" />
-        <Skeleton className="h-4 w-full mb-2" />
-        <Skeleton className="h-4 w-3/4 mb-4" />
-        <Skeleton className="h-10 w-full" />
+      <div className="p-5">
+        <Skeleton className="h-6 w-3/4 mb-2 bg-zinc-800" />
+        <Skeleton className="h-5 w-1/4 mb-3 bg-zinc-800" />
+        <Skeleton className="h-4 w-full mb-2 bg-zinc-800" />
+        <Skeleton className="h-4 w-3/4 mb-4 bg-zinc-800" />
+        <Skeleton className="h-10 w-full bg-zinc-800" />
       </div>
     </div>
   ));
@@ -80,24 +80,29 @@ export default function ProductGrid({ categoryId }: ProductGridProps) {
                 />
               ))
             ) : (
-              <div className="col-span-full text-center py-12">
-                <p className="text-lg text-muted-foreground">
-                  {categoryId 
-                    ? "No products found in this category." 
-                    : "No products available at this time."}
-                </p>
+              <div className="col-span-full text-center py-16">
+                <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 max-w-md mx-auto">
+                  <p className="text-xl text-zinc-300 mb-2">
+                    {categoryId 
+                      ? "No products found in this category." 
+                      : "No products available at this time."}
+                  </p>
+                  <p className="text-zinc-500">
+                    Please check back later or try another category.
+                  </p>
+                </div>
               </div>
             )}
           </div>
           
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center mt-10">
-              <nav className="inline-flex">
+            <div className="flex justify-center mt-12">
+              <nav className="inline-flex space-x-1.5">
                 <Button 
                   variant="outline"
                   size="icon"
-                  className="rounded-r-none"
+                  className="border-zinc-700 hover:border-primary text-zinc-400 hover:text-primary rounded-md"
                   onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                   disabled={currentPage === 1}
                 >
@@ -108,7 +113,9 @@ export default function ProductGrid({ categoryId }: ProductGridProps) {
                   <Button
                     key={page}
                     variant={currentPage === page ? "default" : "outline"}
-                    className={`rounded-none ${currentPage === page ? 'bg-accent text-primary' : ''}`}
+                    className={currentPage === page 
+                      ? 'button-gold rounded-md' 
+                      : 'border-zinc-700 hover:border-primary text-zinc-400 hover:text-primary rounded-md'}
                     onClick={() => handlePageChange(page)}
                   >
                     {page}
@@ -118,7 +125,7 @@ export default function ProductGrid({ categoryId }: ProductGridProps) {
                 <Button 
                   variant="outline"
                   size="icon"
-                  className="rounded-l-none"
+                  className="border-zinc-700 hover:border-primary text-zinc-400 hover:text-primary rounded-md"
                   onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
                   disabled={currentPage === totalPages}
                 >

@@ -6,18 +6,25 @@ export default function ShopPage() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
 
   return (
-    <div>
-      <section className="py-12 bg-secondary">
+    <div className="min-h-screen bg-black">
+      {/* Shop header section */}
+      <section className="bg-zinc-900 py-16 border-b border-zinc-800">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-            <div>
-              <h1 className="text-3xl font-bold font-montserrat mb-2">Shop</h1>
-              <p className="text-muted-foreground">
-                Browse our premium collection of products
-              </p>
-            </div>
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="gold-gradient">Premium Products</span>
+            </h1>
+            <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
+              Browse our exclusive collection of top-quality cannabis products. 
+              All products undergo rigorous quality testing to ensure premium standards.
+            </p>
           </div>
-          
+        </div>
+      </section>
+      
+      {/* Shop content section */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
           <CategoryFilter 
             selectedCategoryId={selectedCategoryId}
             onSelectCategory={setSelectedCategoryId}

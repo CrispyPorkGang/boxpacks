@@ -12,48 +12,50 @@ export default function CurrentSales() {
 
   // Create array of skeleton cards for loading state
   const skeletonCards = Array(4).fill(0).map((_, index) => (
-    <div key={index} className="bg-secondary rounded-lg overflow-hidden shadow-lg">
+    <div key={index} className="bg-black/40 border border-zinc-800/50 rounded-md overflow-hidden shadow-lg">
       <div className="relative">
-        <Skeleton className="w-full h-64" />
-        <div className="absolute top-0 right-0 bg-red-600 text-white px-3 py-1 m-2 rounded font-medium">
+        <Skeleton className="w-full h-64 bg-zinc-800" />
+        <div className="absolute top-2 right-2 bg-gold text-black px-3 py-1 font-semibold text-xs uppercase tracking-wider rounded">
           SALE
         </div>
       </div>
-      <div className="p-4">
-        <Skeleton className="h-7 w-3/4 mb-2" />
+      <div className="p-5">
+        <Skeleton className="h-6 w-3/4 mb-2 bg-zinc-800" />
         <div className="flex items-center mb-3">
-          <Skeleton className="h-6 w-1/4 mr-2" />
-          <Skeleton className="h-5 w-1/4" />
+          <Skeleton className="h-6 w-1/4 mr-2 bg-zinc-800" />
+          <Skeleton className="h-5 w-1/4 bg-zinc-800" />
         </div>
-        <Skeleton className="h-4 w-full mb-2" />
-        <Skeleton className="h-4 w-3/4 mb-4" />
-        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-4 w-full mb-2 bg-zinc-800" />
+        <Skeleton className="h-4 w-3/4 mb-4 bg-zinc-800" />
+        <Skeleton className="h-10 w-full bg-zinc-800" />
       </div>
     </div>
   ));
 
   return (
-    <section className="py-16 bg-primary">
+    <section className="py-16 bg-black">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold font-montserrat">Current Sales</h2>
+          <h2 className="text-3xl font-bold">Current <span className="text-gold">Sales</span></h2>
           <Link href="/shop">
-            <a className="text-accent hover:underline flex items-center">
+            <a className="text-gold hover:text-gold/80 flex items-center transition-colors">
               View All Products <ArrowRight className="ml-1 h-4 w-4" />
             </a>
           </Link>
         </div>
         
         {error ? (
-          <div className="text-center py-12">
-            <p className="text-red-500">Error loading sales: {error.message}</p>
-            <Button 
-              variant="outline" 
-              className="mt-4"
-              onClick={() => window.location.reload()}
-            >
-              Try Again
-            </Button>
+          <div className="text-center py-16">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 max-w-md mx-auto">
+              <p className="text-red-400 mb-4">Error loading sales: {error.message}</p>
+              <Button 
+                variant="outline" 
+                className="border-zinc-700 hover:border-gold text-zinc-300 hover:text-gold"
+                onClick={() => window.location.reload()}
+              >
+                Try Again
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -80,13 +82,17 @@ export default function CurrentSales() {
                 />
               ))
             ) : (
-              <div className="col-span-full text-center py-12">
-                <p className="text-lg text-muted-foreground">No active sales at the moment.</p>
-                <Link href="/shop">
-                  <Button variant="outline" className="mt-4">
-                    Browse All Products
-                  </Button>
-                </Link>
+              <div className="col-span-full text-center py-16">
+                <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 max-w-md mx-auto">
+                  <p className="text-lg text-zinc-300 mb-4">No active sales at the moment.</p>
+                  <Link href="/shop">
+                    <Button 
+                      className="button-gold"
+                    >
+                      Browse All Products
+                    </Button>
+                  </Link>
+                </div>
               </div>
             )}
           </div>

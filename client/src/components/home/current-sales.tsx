@@ -37,10 +37,8 @@ export default function CurrentSales() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold">Current <span className="text-gold">Sales</span></h2>
-          <Link href="/shop">
-            <a className="text-gold hover:text-gold/80 flex items-center transition-colors">
-              View All Products <ArrowRight className="ml-1 h-4 w-4" />
-            </a>
+          <Link href="/shop" className="text-gold hover:text-gold/80 flex items-center transition-colors">
+            View All Products <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
         
@@ -85,13 +83,12 @@ export default function CurrentSales() {
               <div className="col-span-full text-center py-16">
                 <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 max-w-md mx-auto">
                   <p className="text-lg text-zinc-300 mb-4">No active sales at the moment.</p>
-                  <Link href="/shop">
-                    <Button 
-                      className="button-gold"
-                    >
-                      Browse All Products
-                    </Button>
-                  </Link>
+                  <Button
+                    className="button-gold"
+                    onClick={() => window.location.href = "/shop"}
+                  >
+                    Browse All Products
+                  </Button>
                 </div>
               </div>
             )}

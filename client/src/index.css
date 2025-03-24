@@ -8,6 +8,32 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-black text-zinc-100;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  .gold-gradient {
+    @apply bg-gradient-to-r from-yellow-500 to-amber-500 text-transparent bg-clip-text;
+  }
+  
+  .button-gold {
+    @apply bg-primary hover:bg-primary/90 text-black font-medium;
+  }
+  
+  .card-product {
+    @apply bg-zinc-900 border border-zinc-800 hover:border-primary/50 transition-all duration-300;
+  }
+  
+  .nav-link {
+    @apply transition-colors hover:text-primary;
+  }
+  
+  .hero-section {
+    @apply bg-zinc-900 border-b border-zinc-800;
   }
 }

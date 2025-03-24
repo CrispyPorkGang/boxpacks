@@ -42,81 +42,56 @@ export default function Header() {
   const cartItemCount = state.items.reduce((count, item) => count + item.quantity, 0);
   
   return (
-    <header className="bg-primary sticky top-0 z-50 shadow-md">
-      <div className="container mx-auto px-4 py-3">
+    <header className="bg-black sticky top-0 z-50 border-b border-zinc-800">
+      <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Link href="/">
-              <a className="text-2xl font-bold font-montserrat text-accent">
-                ChronicHub
+              <a className="text-2xl font-bold gold-gradient">
+                BoxPacks
               </a>
             </Link>
           </div>
           
-          <nav className="hidden md:flex space-x-6">
+          <nav className="hidden md:flex items-center space-x-8">
             <NavLink href="/" label="Home" currentPath={location} />
             <NavLink href="/shop" label="Shop" currentPath={location} />
+            <NavLink href="/#contact" label="Contact" currentPath={location} />
             {user?.isAdmin && (
               <NavLink href="/admin" label="Admin" currentPath={location} />
             )}
-            <NavLink href="/account" label="Account" currentPath={location} />
-          </nav>
-          
-          <div className="flex items-center space-x-4">
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-foreground hover:text-accent transition">
-                    <User className="h-5 w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem className="font-medium">
-                    {user.username}
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href="/account">
-                      <a className="flex w-full items-center">
-                        <Package className="mr-2 h-4 w-4" />
-                        My Orders
-                      </a>
-                    </Link>
-                  </DropdownMenuItem>
-                  {user.isAdmin && (
-                    <DropdownMenuItem asChild>
-                      <Link href="/admin">
-                        <a className="flex w-full items-center">
-                          <Settings className="mr-2 h-4 w-4" />
-                          Admin Panel
-                        </a>
-                      </Link>
-                    </DropdownMenuItem>
-                  )}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Link href="/auth">
-                <Button variant="ghost" size="icon" className="text-foreground hover:text-accent transition">
-                  <User className="h-5 w-5" />
-                </Button>
-              </Link>
-            )}
+            <Link href="/account">
+              <a className="nav-link flex items-center">
+                <User className="h-5 w-5 mr-1.5" />
+                {user ? user.username : "Account"}
+              </a>
+            </Link>
             
             <Button 
               variant="ghost" 
               size="icon" 
-              className="text-foreground hover:text-accent transition relative"
+              className="text-zinc-100 hover:text-primary transition relative"
               onClick={() => toggleCart(true)}
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-accent text-primary text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-primary text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
+            </Button>
+          </nav>
+          
+          <div className="flex md:hidden items-center space-x-4">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-zinc-100 hover:text-primary transition relative"
+              onClick={() => toggleCart(true)}
+            >
+              <ShoppingCart className="h-5 w-5" />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-primary text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                   {cartItemCount}
                 </span>
               )}
@@ -124,28 +99,31 @@ export default function Header() {
             
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden text-foreground">
+                <Button variant="ghost" size="icon" className="text-zinc-100">
                   {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-primary">
-                <nav className="flex flex-col space-y-4 mt-8">
-                  <MobileNavLink href="/" label="Home" onClick={closeMenu} />
-                  <MobileNavLink href="/shop" label="Shop" onClick={closeMenu} />
-                  {user?.isAdmin && (
-                    <MobileNavLink href="/admin" label="Admin" onClick={closeMenu} />
-                  )}
-                  <MobileNavLink href="/account" label="Account" onClick={closeMenu} />
+              <SheetContent side="right" className="w-[280px] bg-zinc-900 border-l border-zinc-800">
+                <div className="flex flex-col space-y-8 pt-8">
+                  <nav className="flex flex-col space-y-6">
+                    <MobileNavLink href="/" label="Home" onClick={closeMenu} />
+                    <MobileNavLink href="/shop" label="Shop" onClick={closeMenu} />
+                    <MobileNavLink href="/#contact" label="Contact" onClick={closeMenu} />
+                    <MobileNavLink href="/account" label="Account" onClick={closeMenu} />
+                    {user?.isAdmin && (
+                      <MobileNavLink href="/admin" label="Admin" onClick={closeMenu} />
+                    )}
+                  </nav>
                   
-                  <div className="border-t border-gray-700 pt-4 mt-4">
+                  <div className="border-t border-zinc-800 pt-6">
                     {user ? (
                       <>
-                        <div className="text-sm text-muted-foreground mb-4">
-                          Signed in as <span className="font-semibold">{user.username}</span>
+                        <div className="text-sm text-zinc-400 mb-4">
+                          Signed in as <span className="font-semibold text-zinc-300">{user.username}</span>
                         </div>
                         <Button 
-                          variant="secondary" 
-                          className="w-full"
+                          variant="outline" 
+                          className="w-full border-zinc-700 hover:border-primary text-zinc-200 hover:text-primary"
                           onClick={() => {
                             handleLogout();
                             closeMenu();
@@ -157,8 +135,7 @@ export default function Header() {
                       </>
                     ) : (
                       <Button 
-                        variant="secondary" 
-                        className="w-full"
+                        className="w-full button-gold"
                         onClick={closeMenu}
                         asChild
                       >
@@ -171,7 +148,7 @@ export default function Header() {
                       </Button>
                     )}
                   </div>
-                </nav>
+                </div>
               </SheetContent>
             </Sheet>
           </div>

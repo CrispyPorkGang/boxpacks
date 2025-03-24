@@ -15,7 +15,7 @@ declare global {
 
 const scryptAsync = promisify(scrypt);
 
-async function hashPassword(password: string) {
+export async function hashPassword(password: string) {
   const salt = randomBytes(16).toString("hex");
   const buf = (await scryptAsync(password, salt, 64)) as Buffer;
   return `${buf.toString("hex")}.${salt}`;
@@ -52,9 +52,16 @@ export function setupAuth(app: Express) {
       },
       async (email, password, done) => {
         try {
-          const user = await storage.getUserByEmail(email);
+          // Try to find user by email
+          let user = await storage.getUserByEmail(email);
+          
+          // If not found by email, try by username
+          if (!user) {
+            user = await storage.getUserByUsername(email);
+          }
+          
           if (!user || !(await comparePasswords(password, user.password))) {
-            return done(null, false, { message: "Invalid email or password" });
+            return done(null, false, { message: "Invalid credentials" });
           }
           return done(null, user);
         } catch (error) {

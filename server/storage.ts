@@ -10,6 +10,7 @@ import {
 import { randomBytes } from "crypto";
 import createMemoryStore from "memorystore";
 import session from "express-session";
+import { hashPassword } from "./auth";
 
 // Create the memory store for sessions
 const MemoryStore = createMemoryStore(session);
@@ -109,17 +110,23 @@ export class MemStorage implements IStorage {
       checkPeriod: 86400000 // prune expired entries every 24h
     });
     
-    // Add an admin user by default
-    this.createUser({
-      email: "admin@boxpacks.com",
-      username: "admin",
-      password: "admin123", // This will be hashed in auth.ts
-      telegramHandle: "admin"
-    }).then(user => {
-      // Update to make admin
-      const adminUser = { ...user, isAdmin: true };
-      this.users.set(user.id, adminUser);
-    });
+    // Add an admin user by default using an async IIFE
+    (async () => {
+      try {
+        const hashedPassword = await hashPassword("admin123");
+        const user = await this.createUser({
+          email: "admin@boxpacks.com",
+          username: "admin",
+          password: hashedPassword,
+          telegramHandle: "admin"
+        });
+        // Update to make admin
+        const adminUser = { ...user, isAdmin: true };
+        this.users.set(user.id, adminUser);
+      } catch (error) {
+        console.error("Failed to create admin user:", error);
+      }
+    })();
     
     // Add initial categories
     const categories = [

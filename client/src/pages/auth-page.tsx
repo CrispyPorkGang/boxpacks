@@ -102,21 +102,21 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-primary p-4">
-      <div className="max-w-6xl w-full flex flex-col lg:flex-row shadow-lg rounded-lg overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-black p-4">
+      <div className="max-w-6xl w-full flex flex-col lg:flex-row shadow-lg rounded-lg overflow-hidden border border-zinc-800">
         {/* Left side - Authentication Form */}
-        <div className="w-full lg:w-1/2 bg-card p-6">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="register">Register</TabsTrigger>
+        <div className="w-full lg:w-1/2 bg-zinc-900/60 p-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="text-zinc-100">
+            <TabsList className="grid w-full grid-cols-2 mb-6 bg-black/60">
+              <TabsTrigger value="login" className="data-[state=active]:bg-gold data-[state=active]:text-black">Login</TabsTrigger>
+              <TabsTrigger value="register" className="data-[state=active]:bg-gold data-[state=active]:text-black">Register</TabsTrigger>
             </TabsList>
             
             <TabsContent value="login">
-              <Card className="border-none shadow-none">
+              <Card className="border-none shadow-none bg-transparent text-zinc-100">
                 <CardHeader>
-                  <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-2xl font-bold">Welcome <span className="text-gold">back</span></CardTitle>
+                  <CardDescription className="text-zinc-400">
                     Enter your credentials to sign in to your account
                   </CardDescription>
                 </CardHeader>
@@ -130,7 +130,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                              <Input placeholder="example@email.com" {...field} />
+                              <Input placeholder="example@email.com" {...field} className="bg-black/40 border-zinc-700 focus:border-gold" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -143,7 +143,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                              <Input type="password" placeholder="******" {...field} />
+                              <Input type="password" placeholder="******" {...field} className="bg-black/40 border-zinc-700 focus:border-gold" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -151,7 +151,7 @@ export default function AuthPage() {
                       />
                       <Button 
                         type="submit" 
-                        className="w-full mt-6" 
+                        className="w-full mt-6 button-gold" 
                         disabled={loginMutation.isPending}
                       >
                         {loginMutation.isPending ? (
@@ -168,13 +168,13 @@ export default function AuthPage() {
                 </CardContent>
                 <CardFooter className="flex flex-col space-y-4">
                   <div className="flex items-center space-x-2 w-full">
-                    <Separator className="flex-grow" />
-                    <span className="text-muted-foreground text-sm">or</span>
-                    <Separator className="flex-grow" />
+                    <Separator className="flex-grow bg-zinc-700" />
+                    <span className="text-zinc-500 text-sm">or</span>
+                    <Separator className="flex-grow bg-zinc-700" />
                   </div>
                   <Button 
                     variant="outline" 
-                    className="w-full"
+                    className="w-full border-zinc-700 hover:border-gold text-zinc-300 hover:text-gold"
                     onClick={() => setActiveTab("register")}
                   >
                     Create an Account
@@ -184,10 +184,10 @@ export default function AuthPage() {
             </TabsContent>
             
             <TabsContent value="register">
-              <Card className="border-none shadow-none">
+              <Card className="border-none shadow-none bg-transparent text-zinc-100">
                 <CardHeader>
-                  <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-2xl font-bold">Create an <span className="text-gold">account</span></CardTitle>
+                  <CardDescription className="text-zinc-400">
                     Fill in your details to register a new account
                   </CardDescription>
                 </CardHeader>
@@ -201,7 +201,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Username</FormLabel>
                             <FormControl>
-                              <Input placeholder="johndoe" {...field} />
+                              <Input placeholder="johndoe" {...field} className="bg-black/40 border-zinc-700 focus:border-gold" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -214,7 +214,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                              <Input placeholder="example@email.com" {...field} />
+                              <Input placeholder="example@email.com" {...field} className="bg-black/40 border-zinc-700 focus:border-gold" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -228,13 +228,13 @@ export default function AuthPage() {
                             <FormLabel>Telegram Handle</FormLabel>
                             <FormControl>
                               <div className="flex">
-                                <div className="bg-muted flex items-center justify-center px-3 border border-r-0 border-input rounded-l-md">
+                                <div className="bg-black/60 flex items-center justify-center px-3 border border-r-0 border-zinc-700 rounded-l-md">
                                   <FaTelegram className="text-[#0088cc]" />
                                 </div>
                                 <Input 
                                   placeholder="yourusername" 
                                   {...field} 
-                                  className="rounded-l-none"
+                                  className="rounded-l-none bg-black/40 border-zinc-700 focus:border-gold"
                                 />
                               </div>
                             </FormControl>
@@ -249,7 +249,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                              <Input type="password" placeholder="******" {...field} />
+                              <Input type="password" placeholder="******" {...field} className="bg-black/40 border-zinc-700 focus:border-gold" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -262,7 +262,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Confirm Password</FormLabel>
                             <FormControl>
-                              <Input type="password" placeholder="******" {...field} />
+                              <Input type="password" placeholder="******" {...field} className="bg-black/40 border-zinc-700 focus:border-gold" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -270,7 +270,7 @@ export default function AuthPage() {
                       />
                       <Button 
                         type="submit" 
-                        className="w-full mt-6" 
+                        className="w-full mt-6 button-gold" 
                         disabled={registerMutation.isPending}
                       >
                         {registerMutation.isPending ? (
@@ -287,13 +287,13 @@ export default function AuthPage() {
                 </CardContent>
                 <CardFooter className="flex flex-col space-y-4">
                   <div className="flex items-center space-x-2 w-full">
-                    <Separator className="flex-grow" />
-                    <span className="text-muted-foreground text-sm">or</span>
-                    <Separator className="flex-grow" />
+                    <Separator className="flex-grow bg-zinc-700" />
+                    <span className="text-zinc-500 text-sm">or</span>
+                    <Separator className="flex-grow bg-zinc-700" />
                   </div>
                   <Button 
                     variant="outline" 
-                    className="w-full"
+                    className="w-full border-zinc-700 hover:border-gold text-zinc-300 hover:text-gold"
                     onClick={() => setActiveTab("login")}
                   >
                     Sign In
@@ -305,45 +305,45 @@ export default function AuthPage() {
         </div>
         
         {/* Right side - Hero */}
-        <div className="w-full lg:w-1/2 bg-gradient-to-r from-gray-900 to-black p-12 hidden lg:flex flex-col justify-center">
+        <div className="w-full lg:w-1/2 bg-black p-12 hidden lg:flex flex-col justify-center">
           <div className="max-w-md mx-auto">
-            <h1 className="text-3xl font-bold mb-2">ChronicHub</h1>
-            <h2 className="text-2xl font-bold mb-6">Premium Quality <span className="text-accent">Products</span></h2>
-            <p className="text-gray-300 mb-6">
+            <h1 className="text-3xl font-bold mb-2 gold-gradient">BoxPacks</h1>
+            <h2 className="text-2xl font-bold mb-6">Premium Quality <span className="text-gold">Products</span></h2>
+            <p className="text-zinc-300 mb-6">
               Join our community to access exclusive premium products with fast and discreet shipping options. Create an account to place orders and track your purchase history.
             </p>
             <div className="space-y-4">
               <div className="flex items-start">
-                <div className="bg-accent text-primary rounded-full h-6 w-6 flex items-center justify-center mt-0.5 mr-2">
+                <div className="bg-gold text-black rounded-full h-6 w-6 flex items-center justify-center mt-0.5 mr-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <span>Premium quality products</span>
+                <span className="text-zinc-200">Premium quality products</span>
               </div>
               <div className="flex items-start">
-                <div className="bg-accent text-primary rounded-full h-6 w-6 flex items-center justify-center mt-0.5 mr-2">
+                <div className="bg-gold text-black rounded-full h-6 w-6 flex items-center justify-center mt-0.5 mr-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <span>Overnight shipping available</span>
+                <span className="text-zinc-200">Overnight shipping available</span>
               </div>
               <div className="flex items-start">
-                <div className="bg-accent text-primary rounded-full h-6 w-6 flex items-center justify-center mt-0.5 mr-2">
+                <div className="bg-gold text-black rounded-full h-6 w-6 flex items-center justify-center mt-0.5 mr-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <span>Access to exclusive sales and deals</span>
+                <span className="text-zinc-200">Access to exclusive sales and deals</span>
               </div>
               <div className="flex items-start">
-                <div className="bg-accent text-primary rounded-full h-6 w-6 flex items-center justify-center mt-0.5 mr-2">
+                <div className="bg-gold text-black rounded-full h-6 w-6 flex items-center justify-center mt-0.5 mr-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <span>Direct chat support via Telegram</span>
+                <span className="text-zinc-200">Direct chat support via Telegram</span>
               </div>
             </div>
           </div>

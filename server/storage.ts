@@ -111,7 +111,7 @@ export class MemStorage implements IStorage {
     
     // Add an admin user by default
     this.createUser({
-      email: "admin@chronichub.com",
+      email: "admin@boxpacks.com",
       username: "admin",
       password: "admin123", // This will be hashed in auth.ts
       telegramHandle: "admin"

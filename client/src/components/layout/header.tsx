@@ -46,10 +46,8 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Link href="/">
-              <a className="text-2xl font-bold gold-gradient">
-                BoxPacks
-              </a>
+            <Link href="/" className="text-2xl font-bold gold-gradient">
+              BoxPacks
             </Link>
           </div>
           
@@ -60,11 +58,9 @@ export default function Header() {
             {user?.isAdmin && (
               <NavLink href="/admin" label="Admin" currentPath={location} />
             )}
-            <Link href="/account">
-              <a className="nav-link flex items-center">
-                <User className="h-5 w-5 mr-1.5" />
-                {user ? user.username : "Account"}
-              </a>
+            <Link href="/account" className="nav-link flex items-center">
+              <User className="h-5 w-5 mr-1.5" />
+              {user ? user.username : "Account"}
             </Link>
             
             <Button 
@@ -139,11 +135,12 @@ export default function Header() {
                         onClick={closeMenu}
                         asChild
                       >
-                        <Link href="/auth">
-                          <a className="flex items-center justify-center">
-                            <User className="mr-2 h-4 w-4" />
-                            Sign In
-                          </a>
+                        <Link 
+                          href="/auth" 
+                          className="flex items-center justify-center"
+                        >
+                          <User className="mr-2 h-4 w-4" />
+                          Sign In
                         </Link>
                       </Button>
                     )}
@@ -172,10 +169,11 @@ function NavLink({ href, label, currentPath }: NavLinkProps) {
   );
 
   return (
-    <Link href={href}>
-      <a className={`text-${isActive ? 'accent' : 'foreground'} hover:text-accent transition font-medium`}>
-        {label}
-      </a>
+    <Link 
+      href={href} 
+      className={`text-${isActive ? 'accent' : 'foreground'} hover:text-accent transition font-medium`}
+    >
+      {label}
     </Link>
   );
 }
@@ -189,13 +187,12 @@ interface MobileNavLinkProps {
 
 function MobileNavLink({ href, label, onClick }: MobileNavLinkProps) {
   return (
-    <Link href={href}>
-      <a 
-        className="text-foreground hover:text-accent transition font-medium py-2 px-4"
-        onClick={onClick}
-      >
-        {label}
-      </a>
+    <Link 
+      href={href}
+      className="text-foreground hover:text-accent transition font-medium py-2 px-4"
+      onClick={onClick}
+    >
+      {label}
     </Link>
   );
 }

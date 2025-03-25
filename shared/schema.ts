@@ -116,6 +116,18 @@ export const addressSchema = z.object({
   country: z.string()
 });
 
+// Payment Method Type
+export const paymentMethodSchema = z.enum([
+  "zelle", 
+  "cashapp", 
+  "chime", 
+  "btc", 
+  "usdt", 
+  "venmo"
+]);
+
+export type PaymentMethod = z.infer<typeof paymentMethodSchema>;
+
 // Cart Item Type (not stored in DB, just for frontend)
 export const cartItemSchema = z.object({
   productId: z.number(),

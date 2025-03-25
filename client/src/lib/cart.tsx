@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useReducer } from "react";
-import { CartItem, addressSchema } from "@shared/schema";
+import { CartItem, addressSchema, PaymentMethod, paymentMethodSchema } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 
@@ -13,6 +13,7 @@ export interface ShippingInfo extends z.infer<typeof addressSchema> {
 export interface CartState {
   items: CartItem[];
   shippingMethod: ShippingMethod;
+  paymentMethod: PaymentMethod;
   shippingInfo: ShippingInfo | null;
   isOpen: boolean;
   checkoutOpen: boolean;
@@ -22,9 +23,10 @@ export interface CartState {
     items: CartItem[];
     subtotal: number;
     shipping: number;
-    cashAppFee: number;
+    paymentFee: number;
     total: number;
     shippingMethod: ShippingMethod;
+    paymentMethod: PaymentMethod;
     shippingAddress: ShippingInfo;
   } | null;
 }
@@ -35,6 +37,7 @@ type CartAction =
   | { type: "UPDATE_QUANTITY"; payload: { productId: number; quantity: number } }
   | { type: "CLEAR_CART" }
   | { type: "SET_SHIPPING_METHOD"; payload: ShippingMethod }
+  | { type: "SET_PAYMENT_METHOD"; payload: PaymentMethod }
   | { type: "SET_SHIPPING_INFO"; payload: ShippingInfo }
   | { type: "TOGGLE_CART"; payload?: boolean }
   | { type: "TOGGLE_CHECKOUT"; payload?: boolean }
@@ -44,6 +47,7 @@ type CartAction =
 const initialState: CartState = {
   items: [],
   shippingMethod: "standard",
+  paymentMethod: "cashapp", // Default payment method
   shippingInfo: null,
   isOpen: false,
   checkoutOpen: false,
@@ -51,17 +55,43 @@ const initialState: CartState = {
   currentOrder: null
 };
 
-// Calculate totals based on cart items and shipping method
-export const calculateTotals = (items: CartItem[], shippingMethod: ShippingMethod) => {
+// Calculate totals based on cart items, shipping method, and payment method
+export const calculateTotals = (items: CartItem[], shippingMethod: ShippingMethod, paymentMethod: PaymentMethod) => {
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shippingCost = shippingMethod === "standard" ? 50 : 100;
-  const cashAppFee = subtotal * 0.05; // 5% fee
-  const total = subtotal + shippingCost + cashAppFee;
+  
+  // Calculate fee based on payment method
+  let feePercentage = 0;
+  switch (paymentMethod) {
+    case "zelle":
+      feePercentage = 0.05; // 5% fee
+      break;
+    case "cashapp":
+      feePercentage = 0.06; // 6% fee
+      break;
+    case "chime":
+      feePercentage = 0.05; // 5% fee
+      break;
+    case "btc":
+      feePercentage = 0.02; // 2% fee
+      break;
+    case "usdt":
+      feePercentage = 0; // 0% fee
+      break;
+    case "venmo":
+      feePercentage = 0.05; // 5% fee
+      break;
+    default:
+      feePercentage = 0.05; // Default 5% fee
+  }
+  
+  const paymentFee = subtotal * feePercentage;
+  const total = subtotal + shippingCost + paymentFee;
   
   return {
     subtotal,
     shipping: shippingCost,
-    cashAppFee,
+    paymentFee,
     total
   };
 };
@@ -117,6 +147,12 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         ...state,
         shippingMethod: action.payload
       };
+      
+    case "SET_PAYMENT_METHOD":
+      return {
+        ...state,
+        paymentMethod: action.payload
+      };
 
     case "SET_SHIPPING_INFO":
       return {
@@ -169,6 +205,7 @@ interface CartContextType {
   updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
   setShippingMethod: (method: ShippingMethod) => void;
+  setPaymentMethod: (method: PaymentMethod) => void;
   setShippingInfo: (info: ShippingInfo) => void;
   toggleCart: (isOpen?: boolean) => void;
   toggleCheckout: (isOpen?: boolean) => void;
@@ -177,7 +214,7 @@ interface CartContextType {
   getTotals: () => {
     subtotal: number;
     shipping: number;
-    cashAppFee: number;
+    paymentFee: number;
     total: number;
   };
 }
@@ -264,6 +301,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const setShippingInfo = (info: ShippingInfo) => {
     dispatch({ type: "SET_SHIPPING_INFO", payload: info });
+  };
+  
+  const setPaymentMethod = (method: PaymentMethod) => {
+    dispatch({ type: "SET_PAYMENT_METHOD", payload: method });
   };
 
   const toggleCart = (isOpen?: boolean) => {

@@ -46,11 +46,15 @@ export default function CheckoutModal() {
   
   const { subtotal, shipping, paymentFee, total } = getTotals();
   
-  // Handle shipping method changes directly instead of through useEffect
+  // Handle shipping method changes and update cart state
+  const { setShippingMethod: updateCartShippingMethod } = useCart();
+  
   const handleShippingMethodChange = (value: string) => {
     const newShippingMethod = value as ShippingMethod;
+    // Update local state
     setShippingMethod(newShippingMethod);
-    // No need to update local state since it's just for the UI
+    // Update cart context state
+    updateCartShippingMethod(newShippingMethod);
   };
   
   // Create form with default values
@@ -75,6 +79,8 @@ export default function CheckoutModal() {
     const newPaymentMethod = value as PaymentMethod;
     setSelectedPaymentMethod(newPaymentMethod);
     setPaymentMethod(newPaymentMethod);
+    // Force recalculation of totals
+    getTotals();
   };
 
   // Order creation mutation
@@ -137,7 +143,7 @@ export default function CheckoutModal() {
   
   return (
     <Dialog open={state.checkoutOpen} onOpenChange={toggleCheckout}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0">
+      <DialogContent className="max-w-4xl max-h-[95vh] overflow-hidden flex flex-col p-0">
         <DialogHeader className="px-4 pt-4">
           <div className="flex justify-between items-center">
             <DialogTitle className="text-2xl font-bold font-montserrat">Checkout</DialogTitle>
@@ -306,7 +312,7 @@ export default function CheckoutModal() {
                     <div className="mt-4">
                       <h4 className="font-medium mb-2">Shipping Method</h4>
                       <RadioGroup 
-                        defaultValue={shippingMethod} 
+                        value={shippingMethod}
                         onValueChange={handleShippingMethodChange}
                         className="space-y-3"
                       >
@@ -324,7 +330,7 @@ export default function CheckoutModal() {
                     <div className="mt-4">
                       <h4 className="font-medium mb-2">Payment Method</h4>
                       <RadioGroup 
-                        defaultValue={paymentMethod} 
+                        value={paymentMethod}
                         onValueChange={handlePaymentMethodChange}
                         className="space-y-3"
                       >

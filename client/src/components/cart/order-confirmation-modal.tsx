@@ -22,13 +22,47 @@ export default function OrderConfirmationModal() {
   const getFormattedOrderText = () => {
     if (!state.currentOrder) return "";
     
-    const { orderNumber, items, subtotal, shipping, cashAppFee, total, shippingMethod, shippingAddress } = state.currentOrder;
+    const { orderNumber, items, subtotal, shipping, paymentFee, total, shippingMethod, paymentMethod, shippingAddress } = state.currentOrder;
     
     const itemsText = items.map((item, index) => 
       `${index + 1}-${item.name} (${item.weight}) [SKU: ${item.sku}] [${formatCurrency(item.price)}]=${formatCurrency(item.price * item.quantity)}`
     ).join("\n");
     
     const shippingLabel = shippingMethod === "standard" ? "Standard Shipping" : "Overnight Shipping";
+    
+    // Get payment method display name and fee percentage
+    let paymentMethodLabel = "";
+    let feePercentage = "";
+    
+    switch (paymentMethod) {
+      case "zelle":
+        paymentMethodLabel = "Zelle";
+        feePercentage = "5%";
+        break;
+      case "cashapp":
+        paymentMethodLabel = "Cash App";
+        feePercentage = "6%";
+        break;
+      case "chime":
+        paymentMethodLabel = "Chime";
+        feePercentage = "5%";
+        break;
+      case "btc":
+        paymentMethodLabel = "Bitcoin";
+        feePercentage = "2%";
+        break;
+      case "usdt":
+        paymentMethodLabel = "USDT";
+        feePercentage = "0%";
+        break;
+      case "venmo":
+        paymentMethodLabel = "Venmo";
+        feePercentage = "5%";
+        break;
+      default:
+        paymentMethodLabel = "Payment";
+        feePercentage = "5%";
+    }
     
     const addressText = `${shippingAddress.firstName} ${shippingAddress.lastName}
 ${shippingAddress.address1}${shippingAddress.address2 ? `, ${shippingAddress.address2}` : ''}
@@ -44,10 +78,11 @@ ORDER SUMMARY
 Total Items: ${items.length} 
 Subtotal: ${formatCurrency(subtotal)} 
 Shipping (${shippingLabel}): ${formatCurrency(shipping)} 
-CASH APP Fee 5% = ${formatCurrency(cashAppFee)} 
+${paymentMethodLabel} Fee ${feePercentage} = ${formatCurrency(paymentFee)} 
 Total due = ${formatCurrency(total)}
 
 ${shippingMethod === "overnight" ? "OVERNIGHT SHIPPING ORDER SELECTED ✓" : "STANDARD SHIPPING ORDER SELECTED ✓"}
+PAYMENT METHOD: ${paymentMethodLabel.toUpperCase()} ✓
 SHIPPING ADDRESS: 
 ${addressText}
 

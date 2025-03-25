@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart, ShippingInfo, ShippingMethod, PaymentMethod } from "@/lib/cart";
 import { useAuth } from "@/hooks/use-auth";
 import { useMutation } from "@tanstack/react-query";
@@ -45,6 +45,11 @@ export default function CheckoutModal() {
   const [paymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>(state.paymentMethod);
   
   const { subtotal, shipping, paymentFee, total } = getTotals();
+  
+  // Effect to update global payment method state when local state changes
+  useEffect(() => {
+    setPaymentMethod(paymentMethod);
+  }, [paymentMethod, setPaymentMethod]);
   
   // Create form with default values
   const form = useForm<CheckoutFormValues>({

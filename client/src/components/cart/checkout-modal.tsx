@@ -46,15 +46,12 @@ export default function CheckoutModal() {
   
   const { subtotal, shipping, paymentFee, total } = getTotals();
   
-  // Effect to update global shipping and payment method state when local state changes
-  useEffect(() => {
-    setShippingMethod(shippingMethod);
-  }, [shippingMethod, setShippingMethod]);
-  
-  // Effect to update global payment method state when local state changes
-  useEffect(() => {
-    setPaymentMethod(paymentMethod);
-  }, [paymentMethod, setPaymentMethod]);
+  // Handle shipping method changes directly instead of through useEffect
+  const handleShippingMethodChange = (value: string) => {
+    const newShippingMethod = value as ShippingMethod;
+    setShippingMethod(newShippingMethod);
+    // No need to update local state since it's just for the UI
+  };
   
   // Create form with default values
   const form = useForm<CheckoutFormValues>({
@@ -73,7 +70,7 @@ export default function CheckoutModal() {
     }
   });
   
-  // Handle payment method changes
+  // Handle payment method changes directly to avoid infinite updates
   const handlePaymentMethodChange = (value: string) => {
     const newPaymentMethod = value as PaymentMethod;
     setSelectedPaymentMethod(newPaymentMethod);
@@ -310,7 +307,7 @@ export default function CheckoutModal() {
                       <h4 className="font-medium mb-2">Shipping Method</h4>
                       <RadioGroup 
                         defaultValue={shippingMethod} 
-                        onValueChange={(value) => setShippingMethod(value as ShippingMethod)}
+                        onValueChange={handleShippingMethodChange}
                         className="space-y-3"
                       >
                         <div className="flex items-center space-x-2">

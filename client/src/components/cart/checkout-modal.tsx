@@ -46,6 +46,11 @@ export default function CheckoutModal() {
   
   const { subtotal, shipping, paymentFee, total } = getTotals();
   
+  // Effect to update global shipping and payment method state when local state changes
+  useEffect(() => {
+    setShippingMethod(shippingMethod);
+  }, [shippingMethod, setShippingMethod]);
+  
   // Effect to update global payment method state when local state changes
   useEffect(() => {
     setPaymentMethod(paymentMethod);
@@ -135,8 +140,8 @@ export default function CheckoutModal() {
   
   return (
     <Dialog open={state.checkoutOpen} onOpenChange={toggleCheckout}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
-        <DialogHeader className="px-2">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0">
+        <DialogHeader className="px-4 pt-4">
           <div className="flex justify-between items-center">
             <DialogTitle className="text-2xl font-bold font-montserrat">Checkout</DialogTitle>
             <Button variant="ghost" size="icon" onClick={() => toggleCheckout(false)}>
@@ -146,7 +151,7 @@ export default function CheckoutModal() {
         </DialogHeader>
         
         <ScrollArea className="flex-1">
-          <div className="p-2">
+          <div className="p-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h3 className="text-xl font-medium mb-4">Shipping Information</h3>
@@ -395,7 +400,7 @@ export default function CheckoutModal() {
                     </div>
                     <div className="flex justify-between text-lg font-bold">
                       <span>Total:</span>
-                      <span className="text-accent">{formatCurrency(total)}</span>
+                      <span className="text-white">{formatCurrency(total)}</span>
                     </div>
                   </div>
                 </div>

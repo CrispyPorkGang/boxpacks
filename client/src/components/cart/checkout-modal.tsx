@@ -288,7 +288,7 @@ export default function CheckoutModal() {
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input {...field} disabled={!!user?.email} />
+                            <Input {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

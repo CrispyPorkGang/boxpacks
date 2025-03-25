@@ -540,6 +540,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 From: ${req.user.username} (${req.user.email})
 Total Amount: $${order.totalAmount.toFixed(2)}
 Shipping Method: ${order.shippingMethod}
+Payment Method: ${order.paymentMethod}
+Payment Fee: $${order.paymentFee.toFixed(2)}
         `;
         
         bot.sendMessage(ADMIN_TELEGRAM_CHAT_ID, orderSummary);

@@ -74,7 +74,8 @@ export const orders = pgTable("orders", {
   totalAmount: doublePrecision("total_amount").notNull(),
   shippingMethod: text("shipping_method").notNull(),
   shippingCost: doublePrecision("shipping_cost").notNull(),
-  cashAppFee: doublePrecision("cash_app_fee").notNull(),
+  paymentFee: doublePrecision("payment_fee").notNull(),
+  paymentMethod: text("payment_method").notNull(),
   shippingAddress: jsonb("shipping_address").notNull(),
   status: text("status").default("pending").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull()

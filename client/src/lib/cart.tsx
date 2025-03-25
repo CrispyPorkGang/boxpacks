@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 
 export type ShippingMethod = "standard" | "overnight";
+export { paymentMethodSchema, type PaymentMethod } from "@shared/schema";
 
 export interface ShippingInfo extends z.infer<typeof addressSchema> {
   email: string;
@@ -248,6 +249,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
           });
         }
         
+        if (parsedCart.paymentMethod) {
+          dispatch({
+            type: "SET_PAYMENT_METHOD",
+            payload: parsedCart.paymentMethod
+          });
+        }
+        
         if (parsedCart.shippingInfo) {
           dispatch({
             type: "SET_SHIPPING_INFO",
@@ -267,10 +275,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       JSON.stringify({
         items: state.items,
         shippingMethod: state.shippingMethod,
+        paymentMethod: state.paymentMethod,
         shippingInfo: state.shippingInfo
       })
     );
-  }, [state.items, state.shippingMethod, state.shippingInfo]);
+  }, [state.items, state.shippingMethod, state.paymentMethod, state.shippingInfo]);
 
   const addItem = (item: CartItem) => {
     dispatch({ type: "ADD_ITEM", payload: item });
@@ -324,7 +333,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const getTotals = () => {
-    return calculateTotals(state.items, state.shippingMethod);
+    return calculateTotals(state.items, state.shippingMethod, state.paymentMethod);
   };
 
   return (
@@ -336,6 +345,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         updateQuantity,
         clearCart,
         setShippingMethod,
+        setPaymentMethod,
         setShippingInfo,
         toggleCart,
         toggleCheckout,

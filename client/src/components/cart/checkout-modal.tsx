@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useCart, ShippingInfo, ShippingMethod } from "@/lib/cart";
+import { useCart, ShippingInfo, ShippingMethod, PaymentMethod } from "@/lib/cart";
 import { useAuth } from "@/hooks/use-auth";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { addressSchema } from "@shared/schema";
+import { addressSchema, paymentMethodSchema } from "@shared/schema";
 import { formatCurrency } from "@/lib/utils";
 
 import {
@@ -39,16 +39,12 @@ const checkoutFormSchema = addressSchema.extend({
 type CheckoutFormValues = z.infer<typeof checkoutFormSchema>;
 
 export default function CheckoutModal() {
-  const { state, toggleCheckout, setCurrentOrder, toggleOrderConfirmation, getTotals } = useCart();
+  const { state, toggleCheckout, setCurrentOrder, toggleOrderConfirmation, getTotals, setPaymentMethod } = useCart();
   const { user } = useAuth();
   const [shippingMethod, setShippingMethod] = useState<ShippingMethod>(state.shippingMethod);
+  const [paymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>(state.paymentMethod);
   
-  const { subtotal, shipping: defaultShipping, cashAppFee: defaultCashAppFee, total: defaultTotal } = getTotals();
-  
-  // Recalculate shipping cost and total based on selected shipping method
-  const shipping = shippingMethod === "standard" ? 50 : 100;
-  const cashAppFee = subtotal * 0.05;
-  const total = subtotal + shipping + cashAppFee;
+  const { subtotal, shipping, paymentFee, total } = getTotals();
   
   // Create form with default values
   const form = useForm<CheckoutFormValues>({
@@ -67,6 +63,13 @@ export default function CheckoutModal() {
     }
   });
   
+  // Handle payment method changes
+  const handlePaymentMethodChange = (value: string) => {
+    const newPaymentMethod = value as PaymentMethod;
+    setSelectedPaymentMethod(newPaymentMethod);
+    setPaymentMethod(newPaymentMethod);
+  };
+
   // Order creation mutation
   const orderMutation = useMutation({
     mutationFn: async (formData: CheckoutFormValues) => {
@@ -77,7 +80,8 @@ export default function CheckoutModal() {
         totalAmount: total,
         shippingMethod: shippingMethod === "standard" ? "Standard Shipping" : "Overnight Shipping",
         shippingCost: shipping,
-        cashAppFee,
+        paymentMethod: paymentMethod,
+        paymentFee: paymentFee,
         shippingAddress,
         items: state.items.map(item => ({
           productId: item.productId,
@@ -111,9 +115,10 @@ export default function CheckoutModal() {
           items: state.items,
           subtotal,
           shipping,
-          cashAppFee,
+          paymentFee,
           total,
           shippingMethod,
+          paymentMethod,
           shippingAddress
         });
         
@@ -308,6 +313,40 @@ export default function CheckoutModal() {
                         </div>
                       </RadioGroup>
                     </div>
+                    
+                    <div className="mt-4">
+                      <h4 className="font-medium mb-2">Payment Method</h4>
+                      <RadioGroup 
+                        defaultValue={paymentMethod} 
+                        onValueChange={handlePaymentMethodChange}
+                        className="space-y-3"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="zelle" id="zelle" />
+                          <label htmlFor="zelle" className="cursor-pointer">Zelle (5% fee)</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="cashapp" id="cashapp" />
+                          <label htmlFor="cashapp" className="cursor-pointer">Cash App (6% fee)</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="chime" id="chime" />
+                          <label htmlFor="chime" className="cursor-pointer">Chime (5% fee)</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="btc" id="btc" />
+                          <label htmlFor="btc" className="cursor-pointer">Bitcoin (2% fee)</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="usdt" id="usdt" />
+                          <label htmlFor="usdt" className="cursor-pointer">USDT (0% fee)</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="venmo" id="venmo" />
+                          <label htmlFor="venmo" className="cursor-pointer">Venmo (5% fee)</label>
+                        </div>
+                      </RadioGroup>
+                    </div>
                   </form>
                 </Form>
               </div>
@@ -339,8 +378,15 @@ export default function CheckoutModal() {
                       <span>{formatCurrency(shipping)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Cash App Fee (5%):</span>
-                      <span>{formatCurrency(cashAppFee)}</span>
+                      <span>
+                        {paymentMethod === 'zelle' && 'Zelle Fee (5%):'}
+                        {paymentMethod === 'cashapp' && 'Cash App Fee (6%):'}
+                        {paymentMethod === 'chime' && 'Chime Fee (5%):'}
+                        {paymentMethod === 'btc' && 'Bitcoin Fee (2%):'}
+                        {paymentMethod === 'usdt' && 'USDT Fee (0%):'}
+                        {paymentMethod === 'venmo' && 'Venmo Fee (5%):'}
+                      </span>
+                      <span>{formatCurrency(paymentFee)}</span>
                     </div>
                     <div className="flex justify-between text-lg font-bold">
                       <span>Total:</span>

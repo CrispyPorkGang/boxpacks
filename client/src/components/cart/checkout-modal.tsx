@@ -143,7 +143,7 @@ export default function CheckoutModal() {
   
   return (
     <Dialog open={state.checkoutOpen} onOpenChange={toggleCheckout}>
-      <DialogContent className="max-w-4xl max-h-[95vh] overflow-hidden flex flex-col p-0">
+      <DialogContent className="max-w-4xl h-[90vh] md:h-auto max-h-[95vh] overflow-hidden flex flex-col p-0">
         <DialogHeader className="px-4 pt-4">
           <div className="flex justify-between items-center">
             <DialogTitle className="text-2xl font-bold font-montserrat">Checkout</DialogTitle>
@@ -154,8 +154,8 @@ export default function CheckoutModal() {
         </DialogHeader>
         
         <ScrollArea className="flex-1">
-          <div className="p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-2 sm:p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div>
                 <h3 className="text-xl font-medium mb-4">Shipping Information</h3>
                 <Form {...form}>
@@ -314,47 +314,47 @@ export default function CheckoutModal() {
                       <RadioGroup 
                         value={shippingMethod}
                         onValueChange={handleShippingMethodChange}
-                        className="space-y-3"
+                        className="grid grid-cols-1 sm:grid-cols-2 gap-2"
                       >
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 border border-input rounded p-2">
                           <RadioGroupItem value="standard" id="standard" />
-                          <label htmlFor="standard" className="cursor-pointer">Standard Shipping ($50.00)</label>
+                          <label htmlFor="standard" className="cursor-pointer">Standard ($50.00)</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 border border-input rounded p-2">
                           <RadioGroupItem value="overnight" id="overnight" />
-                          <label htmlFor="overnight" className="cursor-pointer">Overnight Shipping ($100.00)</label>
+                          <label htmlFor="overnight" className="cursor-pointer">Overnight ($100.00)</label>
                         </div>
                       </RadioGroup>
                     </div>
                     
                     <div className="mt-4">
                       <h4 className="font-medium mb-2">Payment Method</h4>
-                      <RadioGroup 
+                      <RadioGroup
                         value={paymentMethod}
                         onValueChange={handlePaymentMethodChange}
-                        className="space-y-3"
+                        className="grid grid-cols-1 sm:grid-cols-2 gap-2"
                       >
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 border border-input rounded p-2">
                           <RadioGroupItem value="zelle" id="zelle" />
                           <label htmlFor="zelle" className="cursor-pointer">Zelle (5% fee)</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 border border-input rounded p-2">
                           <RadioGroupItem value="cashapp" id="cashapp" />
                           <label htmlFor="cashapp" className="cursor-pointer">Cash App (6% fee)</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 border border-input rounded p-2">
                           <RadioGroupItem value="chime" id="chime" />
                           <label htmlFor="chime" className="cursor-pointer">Chime (5% fee)</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 border border-input rounded p-2">
                           <RadioGroupItem value="btc" id="btc" />
                           <label htmlFor="btc" className="cursor-pointer">Bitcoin (2% fee)</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 border border-input rounded p-2">
                           <RadioGroupItem value="usdt" id="usdt" />
                           <label htmlFor="usdt" className="cursor-pointer">USDT (0% fee)</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 border border-input rounded p-2">
                           <RadioGroupItem value="venmo" id="venmo" />
                           <label htmlFor="venmo" className="cursor-pointer">Venmo (5% fee)</label>
                         </div>

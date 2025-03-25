@@ -73,9 +73,9 @@ ${itemsText}
 ORDER SUMMARY 
 ------------- 
 Total Items: ${order.items.length} 
-Subtotal: ${formatCurrency(order.totalAmount - order.shippingCost - order.cashAppFee)} 
+Subtotal: ${formatCurrency(order.totalAmount - order.shippingCost - order.paymentFee)} 
 Shipping (${order.shippingMethod}): ${formatCurrency(order.shippingCost)} 
-CASH APP Fee 5% = ${formatCurrency(order.cashAppFee)} 
+Payment Fee (${order.paymentMethod}) = ${formatCurrency(order.paymentFee)} 
 Total due = ${formatCurrency(order.totalAmount)}
 
 ${order.shippingMethod.toUpperCase()} ORDER SELECTED ✓
@@ -85,7 +85,9 @@ ${addressText}
 Order Number: #${order.orderNumber}`;
   };
   
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string | undefined) => {
+    if (!status) return 'bg-gray-500 text-white';
+    
     switch (status.toLowerCase()) {
       case 'completed':
         return 'bg-green-500 text-white';
@@ -256,15 +258,15 @@ Order Number: #${order.orderNumber}`;
                                             <div className="space-y-2">
                                               <div className="flex justify-between">
                                                 <p>Subtotal</p>
-                                                <p>{formatCurrency(selectedOrder.totalAmount - selectedOrder.shippingCost - selectedOrder.cashAppFee)}</p>
+                                                <p>{formatCurrency(selectedOrder.totalAmount - selectedOrder.shippingCost - selectedOrder.paymentFee)}</p>
                                               </div>
                                               <div className="flex justify-between">
                                                 <p>Shipping ({selectedOrder.shippingMethod})</p>
                                                 <p>{formatCurrency(selectedOrder.shippingCost)}</p>
                                               </div>
                                               <div className="flex justify-between">
-                                                <p>Cash App Fee (5%)</p>
-                                                <p>{formatCurrency(selectedOrder.cashAppFee)}</p>
+                                                <p>Payment Fee ({selectedOrder.paymentMethod})</p>
+                                                <p>{formatCurrency(selectedOrder.paymentFee)}</p>
                                               </div>
                                               <Separator />
                                               <div className="flex justify-between font-medium">

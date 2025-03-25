@@ -50,7 +50,9 @@ export default function AdminDashboard() {
     });
   };
   
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string | undefined) => {
+    if (!status) return 'bg-gray-500 text-white';
+    
     switch (status.toLowerCase()) {
       case 'completed':
         return 'bg-green-500 text-white';

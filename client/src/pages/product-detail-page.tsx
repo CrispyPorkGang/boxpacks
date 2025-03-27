@@ -130,11 +130,17 @@ export default function ProductDetailPage() {
               <button
                 key={`video-${index}`}
                 onClick={() => handleVideoClick(video)}
-                className={`w-16 h-16 border rounded-md overflow-hidden bg-black flex items-center justify-center ${
+                className={`w-16 h-16 border rounded-md overflow-hidden ${
                   showVideo && selectedVideo === video ? 'border-primary ring-2 ring-primary ring-opacity-50' : 'border-border'
-                }`}
+                } relative group`}
               >
-                <span className="text-xs text-white">Video {index + 1}</span>
+                <video 
+                  src={video} 
+                  className="w-full h-full object-cover" 
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center group-hover:bg-opacity-30 transition-all">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white h-6 w-6"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </div>
               </button>
             ))}
           </div>

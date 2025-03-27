@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/lib/cart";
-import { ThemeSelector } from "@/components/theme-selector";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -64,8 +63,6 @@ export default function Header() {
               {user ? user.username : "Account"}
             </Link>
             
-            <ThemeSelector />
-            
             <Button 
               variant="ghost" 
               size="icon" 
@@ -113,10 +110,6 @@ export default function Header() {
                       <MobileNavLink href="/admin" label="Admin" onClick={closeMenu} />
                     )}
                   </nav>
-                  
-                  <div className="mb-4 flex justify-center">
-                    <ThemeSelector />
-                  </div>
                   
                   <div className="border-t border-zinc-800 pt-6">
                     {user ? (

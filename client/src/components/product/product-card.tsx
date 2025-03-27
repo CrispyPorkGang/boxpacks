@@ -95,7 +95,7 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
         <div className="grid grid-cols-2 gap-3">
           <Button 
             variant="outline"
-            className="w-full h-11 border-gold/30 text-gold hover:bg-gold/10 hover:text-gold"
+            className="w-full h-11 border-2 border-gold/30 text-gold hover:bg-gold/10 hover:text-gold shadow-md"
             onClick={() => window.location.href = `/product/${product.id}`}
           >
             <Eye className="mr-2 h-4 w-4" /> View Details
@@ -103,7 +103,7 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
           
           <Button 
             onClick={handleAddToCart}
-            className={`w-full ${isAdding ? 'bg-emerald-900 hover:bg-emerald-900 text-emerald-100' : 'button-gold'} h-11 transition-all duration-200`}
+            className={`w-full ${isAdding ? 'bg-emerald-900 hover:bg-emerald-900 text-emerald-100' : 'button-gold border-2 border-gold/30'} h-11 transition-all duration-200 shadow-md`}
             disabled={isAdding}
           >
             {isAdding ? (

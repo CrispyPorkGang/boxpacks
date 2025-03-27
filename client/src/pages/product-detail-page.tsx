@@ -205,7 +205,7 @@ export default function ProductDetailPage() {
             size="lg" 
             onClick={handleAddToCart}
             disabled={!product.inventory || product.inventory <= 0}
-            className="w-full md:w-auto"
+            className="w-full md:w-auto button-gold border-2 border-gold/30 shadow-md"
           >
             <ShoppingCart className="mr-2 h-5 w-5" />
             Add to Cart

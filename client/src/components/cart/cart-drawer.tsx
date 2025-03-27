@@ -138,7 +138,7 @@ export default function CartDrawer() {
             
             <SheetFooter className="mt-6">
               <Button 
-                className="w-full bg-accent hover:bg-accent/90 text-primary font-bold"
+                className="w-full bg-accent hover:bg-accent/90 text-primary font-bold border-2 border-primary/20 shadow-md"
                 onClick={handleCheckout}
               >
                 Proceed to Checkout

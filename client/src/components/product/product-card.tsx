@@ -93,14 +93,13 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
         </div>
         
         <div className="grid grid-cols-2 gap-3">
-          <Link to={`/product/${product.id}`} className="w-full">
-            <Button 
-              variant="outline"
-              className="w-full h-11 border-gold/30 text-gold hover:bg-gold/10 hover:text-gold"
-            >
-              <Eye className="mr-2 h-4 w-4" /> View Details
-            </Button>
-          </Link>
+          <Button 
+            variant="outline"
+            className="w-full h-11 border-gold/30 text-gold hover:bg-gold/10 hover:text-gold"
+            onClick={() => window.location.href = `/product/${product.id}`}
+          >
+            <Eye className="mr-2 h-4 w-4" /> View Details
+          </Button>
           
           <Button 
             onClick={handleAddToCart}

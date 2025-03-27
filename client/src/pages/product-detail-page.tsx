@@ -22,6 +22,11 @@ export default function ProductDetailPage() {
     queryKey: [`/api/products/${productId}`],
     enabled: !!productId,
   });
+  
+  // Get active sale from api if it exists
+  const { data: activeSales } = useQuery<any[]>({
+    queryKey: ["/api/sales/active"],
+  });
 
   // Set the first image as selected by default when product loads
   useEffect(() => {
@@ -71,11 +76,6 @@ export default function ProductDetailPage() {
   if (error || !product) {
     return <NotFound />;
   }
-
-  // Get active sale from api if it exists
-  const { data: activeSales } = useQuery<any[]>({
-    queryKey: ["/api/sales/active"],
-  });
 
   // Find if this product has an active sale
   const activeSale = activeSales?.find(sale => sale.productId === product.id);

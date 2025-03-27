@@ -183,9 +183,11 @@ export default function OrderStepsCarousel() {
               rel="noopener noreferrer"
               className="flex items-center justify-center"
             >
-              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm2.692 14.889c.161.12.361.18.561.18.227 0 .454-.071.649-.213.365-.266.52-.723.379-1.14l-1.883-5.647 4.601-3.073c.336-.225.476-.645.345-1.021-.132-.377-.519-.622-.924-.603l-5.5.255-1.651-5.098c-.124-.384-.479-.646-.881-.646s-.757.262-.881.646l-1.651 5.098-5.5-.255c-.404-.02-.792.226-.924.603-.132.376.009.796.345 1.021l4.601 3.073-1.883 5.647c-.141.417.015.874.379 1.14.195.142.423.213.649.213.2 0 .4-.059.561-.18l4.593-3.092 4.593 3.092z" />
-              </svg>
+              <img 
+                src="/icons/telegram.png" 
+                alt="Telegram" 
+                className="w-5 h-5 mr-2 object-contain" 
+              />
               Contact on Telegram
             </a>
           </Button>
@@ -201,11 +203,11 @@ export default function OrderStepsCarousel() {
               rel="noopener noreferrer"
               className="flex items-center justify-center"
             >
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 260 260">
-                <path d="M130 2C59.3 2 2 59.3 2 130s57.3 128 128 128 128-57.3 128-128S200.7 2 130 2zm0 22c58.9 0 106 47.1 106 106s-47.1 106-106 106S24 188.9 24 130 71.1 24 130 24z"/>
-                <path d="M130.3 62c-5.3 0-8.6 3.1-8.6 8.4v59.1c0 5.7 3.3 8.4 8.6 8.4 5.2 0 8.5-2.8 8.5-8.4V70.3c0-5.2-3.3-8.4-8.5-8.4z"/>
-                <circle cx="130.3" cy="179.9" r="10.7"/>
-              </svg>
+              <img 
+                src="/icons/signal.png" 
+                alt="Signal" 
+                className="w-5 h-5 mr-2 object-contain" 
+              />
               Contact on Signal
             </a>
           </Button>

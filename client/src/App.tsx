@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/home-page";
 import ShopPage from "@/pages/shop-page";
+import ProductDetailPage from "@/pages/product-detail-page";
 import AuthPage from "@/pages/auth-page";
 import AccountPage from "@/pages/account-page";
 import ContactPage from "@/pages/contact-page";
@@ -30,6 +31,7 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/shop" component={ShopPage} />
+      <Route path="/product/:id" component={ProductDetailPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/auth" component={AuthPage} />
       <ProtectedRoute path="/account" component={AccountPage} />

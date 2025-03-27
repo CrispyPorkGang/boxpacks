@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useCart } from "@/lib/cart";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { Check, ShoppingCart } from "lucide-react";
+import { Check, ShoppingCart, Eye } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import { Link } from "wouter";
 
 interface ProductCardProps {
   product: {
@@ -50,11 +51,13 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
   return (
     <div className="card-product rounded-md overflow-hidden group bg-black/20 border border-zinc-800/50 hover:border-gold/40 transition-all">
       <div className="relative overflow-hidden">
-        <img 
-          src={featuredImage}
-          alt={product.name} 
-          className="w-full h-64 object-cover transform group-hover:scale-105 transition duration-300" 
-        />
+        <Link to={`/product/${product.id}`} className="block">
+          <img 
+            src={featuredImage}
+            alt={product.name} 
+            className="w-full h-64 object-cover transform group-hover:scale-105 transition duration-300" 
+          />
+        </Link>
         
         {showSaleBadge && product.sale && (
           <div className="absolute top-2 right-2 bg-gold text-black px-3 py-1 font-semibold text-xs uppercase tracking-wider rounded">
@@ -64,7 +67,9 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
       </div>
       
       <div className="p-5">
-        <h3 className="text-lg font-semibold mb-2 text-zinc-100 group-hover:text-gold transition-colors">{product.name}</h3>
+        <Link to={`/product/${product.id}`}>
+          <h3 className="text-lg font-semibold mb-2 text-zinc-100 hover:text-gold transition-colors">{product.name}</h3>
+        </Link>
         
         <div className="flex items-baseline mb-2">
           {product.sale ? (
@@ -87,21 +92,32 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
           {product.description || `${product.weight} package • SKU: ${product.sku}`}
         </div>
         
-        <Button 
-          onClick={handleAddToCart}
-          className={`w-full ${isAdding ? 'bg-emerald-900 hover:bg-emerald-900 text-emerald-100' : 'button-gold'} h-11 transition-all duration-200`}
-          disabled={isAdding}
-        >
-          {isAdding ? (
-            <>
-              <Check className="mr-2 h-4 w-4" /> Added to Cart
-            </>
-          ) : (
-            <>
-              <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
-            </>
-          )}
-        </Button>
+        <div className="grid grid-cols-2 gap-3">
+          <Link to={`/product/${product.id}`} className="w-full">
+            <Button 
+              variant="outline"
+              className="w-full h-11 border-gold/30 text-gold hover:bg-gold/10 hover:text-gold"
+            >
+              <Eye className="mr-2 h-4 w-4" /> View Details
+            </Button>
+          </Link>
+          
+          <Button 
+            onClick={handleAddToCart}
+            className={`w-full ${isAdding ? 'bg-emerald-900 hover:bg-emerald-900 text-emerald-100' : 'button-gold'} h-11 transition-all duration-200`}
+            disabled={isAdding}
+          >
+            {isAdding ? (
+              <>
+                <Check className="mr-2 h-4 w-4" /> Added
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+              </>
+            )}
+          </Button>
+        </div>
       </div>
     </div>
   );

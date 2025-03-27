@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/lib/cart";
+import { ThemeSelector } from "@/components/theme-selector";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -46,12 +47,13 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold gold-gradient">
-              BoxPacks
+            <Link href="/" className="flex items-center">
+              <img src="/BoxPacksLA_Logo-01.png" alt="BoxPacksLA" className="h-8 mr-2" />
+              <span className="text-2xl font-bold gold-gradient">BoxPacksLA</span>
             </Link>
           </div>
           
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             <NavLink href="/" label="Home" currentPath={location} />
             <NavLink href="/shop" label="Shop" currentPath={location} />
             <NavLink href="/contact" label="Contact" currentPath={location} />
@@ -62,6 +64,8 @@ export default function Header() {
               <User className="h-5 w-5 mr-1.5" />
               {user ? user.username : "Account"}
             </Link>
+            
+            <ThemeSelector />
             
             <Button 
               variant="ghost" 
@@ -110,6 +114,10 @@ export default function Header() {
                       <MobileNavLink href="/admin" label="Admin" onClick={closeMenu} />
                     )}
                   </nav>
+                  
+                  <div className="mb-4 flex justify-center">
+                    <ThemeSelector />
+                  </div>
                   
                   <div className="border-t border-zinc-800 pt-6">
                     {user ? (
@@ -171,7 +179,7 @@ function NavLink({ href, label, currentPath }: NavLinkProps) {
   return (
     <Link 
       href={href} 
-      className={`text-${isActive ? 'accent' : 'foreground'} hover:text-accent transition font-medium`}
+      className={`${isActive ? 'text-gold' : 'text-zinc-100'} hover:text-gold transition font-medium`}
     >
       {label}
     </Link>
@@ -189,7 +197,7 @@ function MobileNavLink({ href, label, onClick }: MobileNavLinkProps) {
   return (
     <Link 
       href={href}
-      className="text-foreground hover:text-accent transition font-medium py-2 px-4"
+      className="text-zinc-100 hover:text-gold transition font-medium py-2 px-4"
       onClick={onClick}
     >
       {label}

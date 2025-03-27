@@ -6,6 +6,10 @@
   --gold: #d4af37;
   --gold-hover: #c5a12f;
   --gold-light: #e6c144;
+  
+  /* Dynamic theme colors - default is gold */
+  --primary: #FFD700;
+  --accent: #F2A900;
 }
 
 @layer base {
@@ -55,6 +59,40 @@
   .button-gold:focus {
     outline: 2px solid var(--gold-light);
     outline-offset: 2px;
+  }
+  
+  /* Dynamic theme classes */
+  .theme-primary {
+    color: var(--primary);
+  }
+  
+  .theme-primary-bg {
+    background-color: var(--primary);
+  }
+  
+  .theme-primary-border {
+    border-color: var(--primary);
+  }
+  
+  .theme-accent {
+    color: var(--accent);
+  }
+  
+  .theme-accent-bg {
+    background-color: var(--accent);
+  }
+  
+  .button-theme {
+    background-color: var(--primary);
+    color: #000;
+    border: 1px solid var(--primary);
+    font-weight: 500;
+  }
+  
+  .button-theme:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #000;
   }
   
   .card-product {

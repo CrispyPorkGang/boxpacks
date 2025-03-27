@@ -48,9 +48,7 @@ export default function AccountPage() {
     queryKey: ["/api/chat"],
   });
   
-  if (!user) {
-    return null; // Protected route will handle redirect
-  }
+  // Protected route will handle redirect and null check
   
   // Format order details for copy/paste
   const getFormattedOrderText = (order: any) => {

@@ -17,6 +17,7 @@ import { ProtectedRoute, AdminRoute } from "./lib/protected-route";
 import { AuthProvider } from "./hooks/use-auth";
 import { CartProvider } from "./lib/cart";
 import { TelegramProvider } from "./hooks/use-telegram";
+import { ThemeProvider } from "./hooks/use-theme";
 import Header from "./components/layout/header";
 import Footer from "./components/layout/footer";
 import CartDrawer from "./components/cart/cart-drawer";
@@ -44,24 +45,26 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <CartProvider>
-          <TelegramProvider>
-            <div className="flex flex-col min-h-screen">
-              <Header />
-              <main className="flex-1">
-                <Router />
-              </main>
-              <Footer />
-              <CartDrawer />
-              <CheckoutModal />
-              <OrderConfirmationModal />
-              <ChatBubble />
-            </div>
-            <Toaster />
-          </TelegramProvider>
-        </CartProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <CartProvider>
+            <TelegramProvider>
+              <div className="flex flex-col min-h-screen">
+                <Header />
+                <main className="flex-1">
+                  <Router />
+                </main>
+                <Footer />
+                <CartDrawer />
+                <CheckoutModal />
+                <OrderConfirmationModal />
+                <ChatBubble />
+              </div>
+              <Toaster />
+            </TelegramProvider>
+          </CartProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

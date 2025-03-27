@@ -14,14 +14,12 @@ export default function HeroSection() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
-            <div className="w-28 h-28 flex items-center justify-center">
-              <img src="/boxpacks.png" alt="BoxPacksLA" className="h-full" />
+            <div className="w-64 md:w-80 flex items-center justify-center">
+              <img src="/boxpacks.png" alt="BoxPacksLA" className="w-full" />
             </div>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight tracking-tight">
-            <span className="text-white">Box<span className="text-gold">PacksLA</span></span>
-          </h1>
+          {/* Removed text title since logo prominently displays the name */}
           
           <h2 className="text-2xl md:text-3xl font-medium mb-6 text-zinc-200">
             Premium Cannabis Products Delivered

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import ProductForm from "@/components/admin/product-form";
+import ProductForm from "@/components/admin/product-form-new";
 import { Link } from "wouter";
 import { formatCurrency } from "@/lib/utils";
 

@@ -1,12 +1,19 @@
-import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { insertProductSchema } from "@shared/schema";
 import { z } from "zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState, useRef, useEffect } from "react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -15,15 +22,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -32,11 +32,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Plus, X } from "lucide-react";
+import { Loader2, Plus, Upload, X } from "lucide-react";
 
 // Extend the product schema for validation
 const productFormSchema = insertProductSchema.extend({
-  // These are only used internally for form handling
+  // These are file upload fields
   imageFile: z.any().optional(),
   videoFile: z.any().optional(),
 });
@@ -53,6 +53,8 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
   const queryClient = useQueryClient();
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
   
   const isEditing = !!productId;
   
@@ -79,18 +81,14 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
       sku: "",
       inventory: 0,
       weight: "1 lb",
-      imageFile: undefined,
-      videoFile: undefined,
     },
   });
   
   // Set form defaults when product data is loaded
-  React.useEffect(() => {
+  useEffect(() => {
     if (product && isEditing) {
       form.reset({
         ...product,
-        newImage: "",
-        newVideo: "",
       });
     }
   }, [product, isEditing, form]);
@@ -99,7 +97,7 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
   const mutation = useMutation({
     mutationFn: async (data: ProductFormValues) => {
       // Remove the extra fields we added for form handling
-      const { newImage, newVideo, ...productData } = data;
+      const { imageFile, videoFile, ...productData } = data;
       
       if (isEditing) {
         const res = await apiRequest("PUT", `/api/products/${productId}`, productData);
@@ -138,8 +136,6 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
           sku: "",
           inventory: 0,
           weight: "1 lb",
-          newImage: "",
-          newVideo: "",
         });
       }
     },
@@ -156,25 +152,109 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
     mutation.mutate(data);
   };
   
-  const addImage = () => {
-    if (!newImage) return;
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
     
-    const currentImages = form.getValues("images") || [];
-    form.setValue("images", [...currentImages, newImage]);
-    setNewImage("");
+    try {
+      setUploadingImage(true);
+      
+      // Create a FormData object to send the file
+      const formData = new FormData();
+      formData.append('image', file);
+      
+      // Upload the image file
+      const response = await fetch('/api/upload/image', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include', // Include cookies for authentication
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to upload image');
+      }
+      
+      const data = await response.json();
+      
+      // Add the image URL to the form
+      const currentImages = form.getValues("images") || [];
+      form.setValue("images", [...currentImages, data.url]);
+      
+      // Clear the file input
+      if (imageInputRef.current) {
+        imageInputRef.current.value = '';
+      }
+      
+      toast({
+        title: "Image uploaded successfully",
+        description: "The image has been added to the product.",
+      });
+      
+    } catch (error) {
+      toast({
+        title: "Failed to upload image",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+  
+  const handleVideoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    try {
+      setUploadingVideo(true);
+      
+      // Create a FormData object to send the file
+      const formData = new FormData();
+      formData.append('video', file);
+      
+      // Upload the video file
+      const response = await fetch('/api/upload/video', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include', // Include cookies for authentication
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to upload video');
+      }
+      
+      const data = await response.json();
+      
+      // Add the video URL to the form
+      const currentVideos = form.getValues("videos") || [];
+      form.setValue("videos", [...currentVideos, data.url]);
+      
+      // Clear the file input
+      if (videoInputRef.current) {
+        videoInputRef.current.value = '';
+      }
+      
+      toast({
+        title: "Video uploaded successfully",
+        description: "The video has been added to the product.",
+      });
+      
+    } catch (error) {
+      toast({
+        title: "Failed to upload video",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingVideo(false);
+    }
   };
   
   const removeImage = (index: number) => {
     const currentImages = form.getValues("images") || [];
     form.setValue("images", currentImages.filter((_, i) => i !== index));
-  };
-  
-  const addVideo = () => {
-    if (!newVideo) return;
-    
-    const currentVideos = form.getValues("videos") || [];
-    form.setValue("videos", [...currentVideos, newVideo]);
-    setNewVideo("");
   };
   
   const removeVideo = (index: number) => {
@@ -226,6 +306,7 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
                       placeholder="Product description" 
                       className="min-h-[100px]" 
                       {...field} 
+                      value={field.value || ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -314,6 +395,7 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
                         min="0" 
                         placeholder="0" 
                         {...field}
+                        value={field.value || 0}
                         onChange={(e) => field.onChange(parseInt(e.target.value))}
                       />
                     </FormControl>
@@ -329,7 +411,11 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
                   <FormItem>
                     <FormLabel>Weight</FormLabel>
                     <FormControl>
-                      <Input placeholder="1 lb" {...field} />
+                      <Input 
+                        placeholder="1 lb" 
+                        {...field} 
+                        value={field.value || ''}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -337,6 +423,7 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
               />
             </div>
             
+            {/* Image Upload Section */}
             <div>
               <FormLabel>Images</FormLabel>
               <div className="space-y-2">
@@ -360,27 +447,51 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
                     </div>
                   ))}
                 </div>
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="Enter image URL"
-                    value={newImage}
-                    onChange={(e) => setNewImage(e.target.value)}
-                  />
-                  <Button type="button" onClick={addImage} variant="outline">
-                    <Plus className="h-4 w-4 mr-1" /> Add
-                  </Button>
-                </div>
+                
+                {/* Hidden file input */}
+                <input 
+                  type="file" 
+                  ref={imageInputRef}
+                  onChange={handleImageUpload}
+                  accept="image/*"
+                  className="hidden"
+                />
+                
+                {/* Upload button */}
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => imageInputRef.current?.click()}
+                  disabled={uploadingImage}
+                >
+                  {uploadingImage ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="h-4 w-4 mr-2" /> Upload Image
+                    </>
+                  )}
+                </Button>
               </div>
             </div>
             
+            {/* Video Upload Section */}
             <div>
               <FormLabel>Videos</FormLabel>
               <div className="space-y-2">
                 <div className="flex flex-col gap-2 mb-2">
                   {form.watch("videos")?.map((video, index) => (
                     <div key={index} className="flex justify-between items-center bg-muted p-2 rounded">
-                      <a href={video} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-                        {video}
+                      <a 
+                        href={video} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-accent hover:underline truncate max-w-[80%]"
+                      >
+                        {video.split('/').pop()}
                       </a>
                       <Button
                         type="button"
@@ -393,16 +504,34 @@ export default function ProductForm({ productId, onSuccess }: ProductFormProps) 
                     </div>
                   ))}
                 </div>
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="Enter video URL"
-                    value={newVideo}
-                    onChange={(e) => setNewVideo(e.target.value)}
-                  />
-                  <Button type="button" onClick={addVideo} variant="outline">
-                    <Plus className="h-4 w-4 mr-1" /> Add
-                  </Button>
-                </div>
+                
+                {/* Hidden file input */}
+                <input 
+                  type="file" 
+                  ref={videoInputRef}
+                  onChange={handleVideoUpload}
+                  accept="video/*"
+                  className="hidden"
+                />
+                
+                {/* Upload button */}
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => videoInputRef.current?.click()}
+                  disabled={uploadingVideo}
+                >
+                  {uploadingVideo ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="h-4 w-4 mr-2" /> Upload Video
+                    </>
+                  )}
+                </Button>
               </div>
             </div>
           </CardContent>

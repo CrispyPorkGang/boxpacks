@@ -1,10 +1,12 @@
-import type { Express, Request, Response } from "express";
+import express, { type Express, type Request, type Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
 import { z } from "zod";
 import TelegramBot from "node-telegram-bot-api";
 import { WebSocketServer, WebSocket } from "ws";
+import path from "path";
+import { uploadImage, uploadVideo } from "./upload";
 import { 
   insertProductSchema, 
   insertCategorySchema,
@@ -163,6 +165,69 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // Serve uploaded files
+  app.use('/uploads', (req, res, next) => {
+    // Only allow authenticated users or public image access
+    if (req.isAuthenticated() || req.path.startsWith('/images/')) {
+      next();
+    } else {
+      res.status(401).json({ error: "Unauthorized" });
+    }
+  }, express.static(path.join(process.cwd(), 'uploads')));
+
+  // ===== FILE UPLOAD ROUTES =====
+  // Image upload endpoint
+  app.post("/api/upload/image", async (req, res) => {
+    if (!req.isAuthenticated() || !req.user.isAdmin) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+
+    try {
+      // Use multer to handle the file upload
+      uploadImage.single('image')(req, res, (err) => {
+        if (err) {
+          return res.status(400).json({ error: err.message });
+        }
+
+        if (!req.file) {
+          return res.status(400).json({ error: "No image file uploaded" });
+        }
+
+        // Return the file path to be stored in the product
+        const filePath = `/uploads/images/${req.file.filename}`;
+        res.json({ url: filePath });
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to upload image" });
+    }
+  });
+
+  // Video upload endpoint
+  app.post("/api/upload/video", async (req, res) => {
+    if (!req.isAuthenticated() || !req.user.isAdmin) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+
+    try {
+      // Use multer to handle the file upload
+      uploadVideo.single('video')(req, res, (err) => {
+        if (err) {
+          return res.status(400).json({ error: err.message });
+        }
+
+        if (!req.file) {
+          return res.status(400).json({ error: "No video file uploaded" });
+        }
+
+        // Return the file path to be stored in the product
+        const filePath = `/uploads/videos/${req.file.filename}`;
+        res.json({ url: filePath });
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to upload video" });
+    }
+  });
+  
   // ===== CATEGORY ROUTES =====
   app.get("/api/categories", async (req, res) => {
     try {

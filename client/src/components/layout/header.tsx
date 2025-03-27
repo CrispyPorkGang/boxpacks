@@ -47,7 +47,7 @@ export default function Header() {
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <img src="/BOXPACKSLA_Logo-01.png" alt="BoxPacksLA" className="h-12" />
+              <img src="/boxpacks.png" alt="BoxPacksLA" className="h-12" />
             </Link>
           </div>
           

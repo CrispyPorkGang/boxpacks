@@ -15,7 +15,7 @@ export default function HeroSection() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
             <div className="w-28 h-28 flex items-center justify-center">
-              <img src="/BOXPACKSLA_Logo-01.png" alt="BoxPacksLA" className="h-full" />
+              <img src="/boxpacks.png" alt="BoxPacksLA" className="h-full" />
             </div>
           </div>
           

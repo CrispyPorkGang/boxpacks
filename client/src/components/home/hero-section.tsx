@@ -14,13 +14,13 @@ export default function HeroSection() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 flex items-center justify-center rounded-full bg-black/40 border border-gold/30">
-              <ShoppingBag className="h-10 w-10 text-gold" />
+            <div className="w-28 h-28 flex items-center justify-center">
+              <img src="/BoxPacksLA_Logo-01.png" alt="BoxPacksLA" className="h-full" />
             </div>
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight tracking-tight">
-            <span className="text-white">Box<span className="text-gold">Packs</span></span>
+            <span className="text-white">Box<span className="text-gold">PacksLA</span></span>
           </h1>
           
           <h2 className="text-2xl md:text-3xl font-medium mb-6 text-zinc-200">

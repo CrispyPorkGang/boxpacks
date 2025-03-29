@@ -18,8 +18,12 @@ export default function ContactPage() {
         <div className="grid gap-8 md:grid-cols-2">
           {/* Telegram Contact Card */}
           <div className="bg-black/30 border border-zinc-800 rounded-lg p-8 flex flex-col items-center text-center">
-            <div className="bg-[#0088cc]/10 p-4 rounded-full mb-4">
-              <FaTelegram className="h-12 w-12 text-[#0088cc]" />
+            <div className="bg-[#0088cc]/10 p-4 rounded-full mb-4 flex items-center justify-center">
+              <img 
+                src="/icons/telegram.png" 
+                alt="Telegram" 
+                className="h-12 w-12 object-contain" 
+              />
             </div>
             <h3 className="text-xl font-bold mb-3">Telegram</h3>
             <p className="text-zinc-400 mb-6">
@@ -43,12 +47,12 @@ export default function ContactPage() {
           
           {/* Signal Contact Card */}
           <div className="bg-black/30 border border-zinc-800 rounded-lg p-8 flex flex-col items-center text-center">
-            <div className="bg-zinc-900 p-4 rounded-full mb-4">
-              <svg className="h-12 w-12 text-gold" fill="currentColor" viewBox="0 0 260 260">
-                <path d="M130 2C59.3 2 2 59.3 2 130s57.3 128 128 128 128-57.3 128-128S200.7 2 130 2zm0 22c58.9 0 106 47.1 106 106s-47.1 106-106 106S24 188.9 24 130 71.1 24 130 24z"/>
-                <path d="M130.3 62c-5.3 0-8.6 3.1-8.6 8.4v59.1c0 5.7 3.3 8.4 8.6 8.4 5.2 0 8.5-2.8 8.5-8.4V70.3c0-5.2-3.3-8.4-8.5-8.4z"/>
-                <circle cx="130.3" cy="179.9" r="10.7"/>
-              </svg>
+            <div className="bg-zinc-900 p-4 rounded-full mb-4 flex items-center justify-center">
+              <img 
+                src="/icons/signal.png" 
+                alt="Signal" 
+                className="h-12 w-12 object-contain" 
+              />
             </div>
             <h3 className="text-xl font-bold mb-3">Signal</h3>
             <p className="text-zinc-400 mb-6">

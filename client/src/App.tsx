@@ -2,6 +2,7 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
+import { useState, useEffect } from "react";
 import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/home-page";
 import ShopPage from "@/pages/shop-page";
@@ -25,6 +26,7 @@ import CartDrawer from "./components/cart/cart-drawer";
 import CheckoutModal from "./components/cart/checkout-modal";
 import OrderConfirmationModal from "./components/cart/order-confirmation-modal";
 import ChatBubble from "./components/chat/chat-bubble";
+import PasswordGate from "./components/password-gate";
 
 function Router() {
   return (
@@ -45,23 +47,57 @@ function Router() {
 }
 
 function App() {
+  // Define the site password
+  const SITE_PASSWORD = "boxpacks"; // You can change this to any password you want
+  
+  // State to track if the site is unlocked
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isCheckingStorage, setIsCheckingStorage] = useState(true);
+
+  // Check localStorage on initial load
+  useEffect(() => {
+    const unlocked = localStorage.getItem("site_unlocked");
+    if (unlocked === "true") {
+      setIsUnlocked(true);
+    }
+    setIsCheckingStorage(false);
+  }, []);
+
+  // Handle successful password entry
+  const handleUnlock = () => {
+    setIsUnlocked(true);
+  };
+
+  // Show loading state while checking localStorage
+  if (isCheckingStorage) {
+    return (
+      <div className="fixed inset-0 w-full h-full bg-black flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-gold border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <AuthProvider>
           <CartProvider>
             <TelegramProvider>
-              <div className="flex flex-col min-h-screen">
-                <Header />
-                <main className="flex-1">
-                  <Router />
-                </main>
-                <Footer />
-                <CartDrawer />
-                <CheckoutModal />
-                <OrderConfirmationModal />
-                <ChatBubble />
-              </div>
+              {!isUnlocked ? (
+                <PasswordGate correctPassword={SITE_PASSWORD} onUnlock={handleUnlock} />
+              ) : (
+                <div className="flex flex-col min-h-screen">
+                  <Header />
+                  <main className="flex-1">
+                    <Router />
+                  </main>
+                  <Footer />
+                  <CartDrawer />
+                  <CheckoutModal />
+                  <OrderConfirmationModal />
+                  <ChatBubble />
+                </div>
+              )}
               <Toaster />
             </TelegramProvider>
           </CartProvider>

@@ -195,28 +195,32 @@ export default function ProductDetailPage() {
             </div>
             <div>
               <span className="text-sm font-medium text-muted-foreground block">Availability</span>
-              <div className={`inline-flex items-center rounded text-sm font-medium ${
-                product.inventory > 10 
-                  ? 'text-emerald-400' 
-                  : product.inventory > 0 
-                    ? 'text-amber-400' 
-                    : 'text-red-400'
-              }`}>
-                {product.inventory > 0 
-                  ? `${product.inventory} in stock` 
-                  : 'Out of stock'}
-              </div>
+              {product && (
+                <div className={`inline-flex items-center rounded text-sm font-medium ${
+                  typeof product.inventory === 'number' && product.inventory > 10 
+                    ? 'text-emerald-400' 
+                    : typeof product.inventory === 'number' && product.inventory > 0 
+                      ? 'text-amber-400' 
+                      : 'text-red-400'
+                }`}>
+                  {typeof product.inventory === 'number' && product.inventory > 0 
+                    ? `${product.inventory} in stock` 
+                    : 'Out of stock'}
+                </div>
+              )}
             </div>
           </div>
 
           <Button 
             size="lg" 
             onClick={handleAddToCart}
-            disabled={!product.inventory || product.inventory <= 0}
+            disabled={typeof product.inventory !== 'number' || product.inventory <= 0}
             className="w-full md:w-auto button-gold border-2 border-gold/30 shadow-md"
           >
             <ShoppingCart className="mr-2 h-5 w-5" />
-            Add to Cart
+            {typeof product.inventory === 'number' && product.inventory > 0 
+              ? 'Add to Cart' 
+              : 'Out of Stock'}
           </Button>
         </div>
       </div>

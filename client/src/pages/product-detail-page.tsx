@@ -195,9 +195,17 @@ export default function ProductDetailPage() {
             </div>
             <div>
               <span className="text-sm font-medium text-muted-foreground block">Availability</span>
-              <span className={product.inventory && product.inventory > 0 ? "text-primary" : "text-destructive"}>
-                {product.inventory && product.inventory > 0 ? "In Stock" : "Out of Stock"}
-              </span>
+              <div className={`inline-flex items-center rounded text-sm font-medium ${
+                product.inventory > 10 
+                  ? 'text-emerald-400' 
+                  : product.inventory > 0 
+                    ? 'text-amber-400' 
+                    : 'text-red-400'
+              }`}>
+                {product.inventory > 0 
+                  ? `${product.inventory} in stock` 
+                  : 'Out of stock'}
+              </div>
             </div>
           </div>
 

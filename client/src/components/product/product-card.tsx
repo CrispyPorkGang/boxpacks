@@ -15,6 +15,7 @@ interface ProductCardProps {
     images?: string[];
     sku: string;
     weight: string;
+    inventory?: number;
     sale?: {
       discountPercentage: number;
       salePrice: number;
@@ -67,9 +68,25 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
       </div>
       
       <div className="p-5">
-        <Link to={`/product/${product.id}`}>
-          <h3 className="text-lg font-semibold mb-2 text-zinc-100 hover:text-gold transition-colors">{product.name}</h3>
-        </Link>
+        <div className="flex justify-between items-start">
+          <Link to={`/product/${product.id}`}>
+            <h3 className="text-lg font-semibold mb-2 text-zinc-100 hover:text-gold transition-colors">{product.name}</h3>
+          </Link>
+          
+          {typeof product.inventory === 'number' && (
+            <div className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
+              product.inventory > 10 
+                ? 'bg-emerald-900/30 text-emerald-400 border border-emerald-900/50' 
+                : product.inventory > 0 
+                  ? 'bg-amber-900/30 text-amber-400 border border-amber-900/50' 
+                  : 'bg-red-900/30 text-red-400 border border-red-900/50'
+            }`}>
+              {product.inventory > 0 
+                ? `${product.inventory} in stock` 
+                : 'Out of stock'}
+            </div>
+          )}
+        </div>
         
         <div className="flex items-baseline mb-2">
           {product.sale ? (
@@ -103,12 +120,22 @@ export function ProductCard({ product, showSaleBadge = false }: ProductCardProps
           
           <Button 
             onClick={handleAddToCart}
-            className={`w-full ${isAdding ? 'bg-emerald-900 hover:bg-emerald-900 text-emerald-100' : 'button-gold border-2 border-gold/30'} h-11 transition-all duration-200 shadow-md`}
-            disabled={isAdding}
+            className={`w-full ${
+              isAdding 
+                ? 'bg-emerald-900 hover:bg-emerald-900 text-emerald-100' 
+                : typeof product.inventory === 'number' && product.inventory <= 0
+                  ? 'bg-zinc-800 hover:bg-zinc-800 text-zinc-500 cursor-not-allowed'
+                  : 'button-gold border-2 border-gold/30'
+            } h-11 transition-all duration-200 shadow-md`}
+            disabled={isAdding || (typeof product.inventory === 'number' && product.inventory <= 0)}
           >
             {isAdding ? (
               <>
                 <Check className="mr-2 h-4 w-4" /> Added
+              </>
+            ) : typeof product.inventory === 'number' && product.inventory <= 0 ? (
+              <>
+                <ShoppingCart className="mr-2 h-4 w-4" /> Out of Stock
               </>
             ) : (
               <>
